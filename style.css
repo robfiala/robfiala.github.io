@@ -1,0 +1,100 @@
+/* GLOBAL */
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0F0B16;
+    color: #F0E9FF;
+    overflow-x: hidden;
+}
+
+section {
+    padding: 80px 12%;
+}
+
+/* HERO SECTION */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    margin: 0;
+    color: #A259FF;
+}
+
+.small {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* FLOATING PURPLE BLOB */
+.floating-blob {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #A259FF, #6C33A3);
+    filter: blur(140px);
+    border-radius: 50%;
+    top: -150px;
+    right: -150px;
+    animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+    0%,100% { transform: translate(0,0); }
+    50% { transform: translate(20px, -40px); }
+}
+
+/* FADE-IN ANIMATION */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1s forwards;
+}
+.delay-1 { animation-delay: .3s; }
+.delay-2 { animation-delay: .6s; }
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* REVEAL ON SCROLL */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.7s ease-out;
+}
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* PROJECTS */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+}
+.project-card {
+    background: #181222;
+    padding: 25px;
+    border-radius: 12px;
+    transition: transform .3s, background .3s;
+}
+.project-card:hover {
+    transform: translateY(-8px);
+    background: #201630;
+}
+
+/* CONTACT */
+.email {
+    color: #A259FF;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
