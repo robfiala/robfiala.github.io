@@ -1,8 +1,4 @@
-/* Clean stylesheet for portfolio
-   - Hero section scrolls out naturally
-   - Carousel section scrolls in below
-   - Contact fixed at bottom
-*/
+/* ---------- paste entire file replacing your current style.css ---------- */
 
 :root {
   --font: "Poppins", Arial, Helvetica, sans-serif;
@@ -55,15 +51,18 @@ section {
   z-index: 2;
 }
 
+/* NOTE: remove any preset translate set in CSS — JS controls the hero vertical position */
 .hero-content {
   z-index: 3;
   text-align: center;
   max-width: 1100px;
   padding: 0 20px;
   position: relative;
-  transform: translateY(-30vh);
+  transform: none; /* <- important: let JS drive vertical movement */
+  will-change: transform; /* help the browser render transforms smoothly */
 }
 
+/* type + spacing */
 .hero-content h1 {
   margin: 0;
   font-weight: 700;
@@ -83,15 +82,18 @@ section {
   opacity: 0.85;
 }
 
+/* make fade faster and linear so it tracks scroll closely */
 .hero-text {
-  transition: opacity 0.6s ease;
+  transition: opacity 0.18s linear; /* tuned for snappy behaviour when scrolling back up */
 }
 
+/* when scrolled far enough, hide hero text */
 .hero-content.scrolled .hero-text {
   opacity: 0;
   pointer-events: none;
 }
 
+/* floating blob unchanged */
 .floating-blob {
   position: absolute;
   width: 520px;
@@ -139,6 +141,7 @@ section {
   opacity: 0;
   pointer-events: none;
   z-index: 10;
+  transition: opacity 220ms linear; /* a quick fade in to match text fade */
 }
 
 .carousel-section.scrolled .carousel {
@@ -146,6 +149,7 @@ section {
   pointer-events: auto;
 }
 
+/* carousel internals unchanged (keep your styles) */
 .carousel-track {
   position: relative;
   height: 380px;
@@ -269,10 +273,19 @@ section {
 }
 
 /* ===== ANIMATIONS ===== */
+/* Keep the fade-in-up animation for smaller elements outside hero,
+   but disable it for inline hero elements (we control hero fade with JS) */
 .fade-in-up {
   opacity: 0;
   transform: translateY(18px);
   animation: fadeUp 1s forwards;
+}
+
+/* disable the automatic animation *only* for elements inside the hero text block */
+.hero-text .fade-in-up {
+  animation: none;
+  opacity: 1;
+  transform: none;
 }
 
 .delay-1 {
