@@ -45,7 +45,7 @@ function onScrollToggle() {
     }
 
     // Class management
-    if (scrolled > vh) {
+    if (scrolled >= vh) {
       heroContent.classList.add("scrolled");
       if (carouselSection) carouselSection.classList.add("scrolled");
     } else {
