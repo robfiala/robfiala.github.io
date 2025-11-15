@@ -1,56 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rob Fiala — Portfolio</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+  </head>
+  <body>
+    <!-- in-page file-like menu (replaces the sections when opened) -->
 
     <!-- HERO SECTION -->
     <section class="hero">
-        <div class="hero-content">
-            <h1 class="fade-in-up">Rob Fiala</h1>
-            <p class="fade-in-up delay-1">Creative Designer & Visual Storyteller</p>
-            <p class="fade-in-up delay-2 small">Crafting original visuals with motion, depth, and personality.</p>
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1 class="fade-in-up">robert fiala</h1>
+          <p class="fade-in-up delay-1">
+            Creative Designer & Visual Storyteller
+          </p>
+          <p class="fade-in-up delay-2 small">
+            Crafting original visuals with motion, depth, and personality.
+          </p>
         </div>
-        <div class="floating-blob"></div>
-    </section>
+      </div>
 
-    <!-- ABOUT -->
-    <section class="about reveal">
-        <h2>About Me</h2>
-        <p>
-            I’m a multidisciplinary creator who blends visual design, storytelling,
-            and motion to bring ideas to life. I focus on original, recognizable
-            creative identity with smooth, subtle animations.
-        </p>
-    </section>
-
-    <!-- PROJECTS -->
-    <section class="projects reveal">
-        <h2>Projects</h2>
-        <div class="project-grid">
-            <div class="project-card">
-                <h3>Project Name</h3>
-                <p>A short description of your project goes here.</p>
-            </div>
-            <div class="project-card">
-                <h3>Another Project</h3>
-                <p>Another short description goes here.</p>
-            </div>
+      <!-- CAROUSEL OVERLAY - fades in as title fades out -->
+      <div class="carousel-section">
+        <div class="carousel" aria-roledescription="carousel">
+          <div class="carousel-track">
+            <button
+              class="carousel-item"
+              data-index="0"
+              aria-label="Photoshop work"
+            >
+              <div class="icon">🖼️</div>
+              <div class="label">Photoshop</div>
+            </button>
+            <button
+              class="carousel-item"
+              data-index="1"
+              aria-label="Photography"
+            >
+              <div class="icon">📸</div>
+              <div class="label">Photography</div>
+            </button>
+            <button
+              class="carousel-item"
+              data-index="2"
+              aria-label="Videography"
+            >
+              <div class="icon">🎥</div>
+              <div class="label">Videography</div>
+            </button>
+            <button
+              class="carousel-item"
+              data-index="3"
+              aria-label="Illustration"
+            >
+              <div class="icon">✏️</div>
+              <div class="label">Illustration</div>
+            </button>
+            <button class="carousel-item" data-index="4" aria-label="Branding">
+              <div class="icon">🎨</div>
+              <div class="label">Branding</div>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <div class="floating-blob"></div>
     </section>
 
-    <!-- CONTACT -->
-    <section class="contact reveal">
-        <h2>Contact</h2>
-        <p>Want to work together? Reach out:</p>
-        <a class="email" href="mailto:your@email.com">your@email.com</a>
+    <!-- Spacer to allow scrolling through hero animation -->
+    <div style="height: 100vh"></div>
+
+    <!-- CONTACT (now also contains About content) -->
+    <section id="contact" class="contact reveal">
+      <div class="contact-inner">
+        <div class="contact-left">
+          <h2>Contact</h2>
+          <p>
+            I'm a multidisciplinary creator who blends visual design,
+            storytelling, and motion to bring ideas to life. I focus on
+            original, recognizable creative identity with smooth, subtle
+            animations.
+          </p>
+        </div>
+        <div class="contact-right">
+          <p>Want to work together?</p>
+          <a class="email" href="mailto:your@email.com">your@email.com</a>
+        </div>
+      </div>
     </section>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
-
