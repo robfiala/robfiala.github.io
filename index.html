@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rob Fiala — Portfolio</title>
+    <!-- Custom hero title font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -23,24 +28,48 @@
     <section class="carousel-section">
       <div class="carousel">
         <div class="carousel-track">
-          <!-- EXAMPLE ITEMS — replace with your own later -->
-          <div class="carousel-item">
-            <div class="icon">🎨</div>
+          <!-- Full-width items with background images -->
+          <button
+            class="carousel-item"
+            data-bg="https://picsum.photos/seed/brand/1600/900"
+            aria-label="Brand Design"
+          >
             <div class="label">Brand Design</div>
-          </div>
-
-          <div class="carousel-item">
-            <div class="icon">🖥️</div>
+          </button>
+          <button
+            class="carousel-item"
+            data-bg="https://picsum.photos/seed/uiux/1600/900"
+            aria-label="UI / UX"
+          >
             <div class="label">UI / UX</div>
-          </div>
-
-          <div class="carousel-item">
-            <div class="icon">📸</div>
+          </button>
+          <button
+            class="carousel-item"
+            data-bg="https://picsum.photos/seed/photo/1600/900"
+            aria-label="Photography"
+          >
             <div class="label">Photography</div>
-          </div>
+          </button>
+          <button
+            class="carousel-item"
+            data-bg="https://picsum.photos/seed/motion/1600/900"
+            aria-label="Motion Design"
+          >
+            <div class="label">Motion Design</div>
+          </button>
+          <button
+            class="carousel-item"
+            data-bg="https://picsum.photos/seed/illustration/1600/900"
+            aria-label="Illustration"
+          >
+            <div class="label">Illustration</div>
+          </button>
         </div>
       </div>
     </section>
+
+    <!-- Spacer to allow scroll for hero motion -->
+    <div class="scroll-space" aria-hidden="true"></div>
 
     <section class="contact">
       <div class="contact-inner">
