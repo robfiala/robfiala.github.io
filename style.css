@@ -1,9 +1,7 @@
-/* ---------- paste entire file replacing your current style.css ---------- */
-
 :root {
-  --font: "Poppins", Arial, Helvetica, sans-serif;
+  --font: "Poppins", Arial, sans-serif;
   --bg: #0f0b16;
-  --muted: #f0e9ff;
+  --text: #f0e9ff;
   --accent: #a259ff;
   --contact-height: 86px;
 }
@@ -12,88 +10,62 @@
   box-sizing: border-box;
 }
 
-html {
-  height: auto;
-}
-
 body {
-  height: auto;
   margin: 0;
-  font-family: var(--font);
   background: var(--bg);
-  color: var(--muted);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  color: var(--text);
+  font-family: var(--font);
   overflow-x: hidden;
   padding-bottom: var(--contact-height);
-  padding-top: 0;
 }
 
-section {
-  padding: 88px 12%;
-}
+/* ========================= HERO ========================= */
 
-/* ===== HERO SECTION ===== */
 .hero {
   height: 100vh;
   min-height: 560px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  overflow: visible;
-  padding: 0;
-  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
   background: var(--bg);
-  z-index: 2;
 }
 
-/* NOTE: remove any preset translate set in CSS — JS controls the hero vertical position */
 .hero-content {
-  z-index: 3;
   text-align: center;
-  max-width: 1100px;
-  padding: 0 20px;
   position: relative;
-  transform: none; /* <- important: let JS drive vertical movement */
-  will-change: transform; /* help the browser render transforms smoothly */
+  will-change: transform;
+  transform: translate3d(0, 0, 0); /* START CENTERED */
 }
 
-/* type + spacing */
-.hero-content h1 {
-  margin: 0;
-  font-weight: 700;
-  color: var(--accent);
+.hero-text {
+  opacity: 1;
+  transition: opacity 0.18s linear;
+}
+
+.hero-title {
   font-size: clamp(40px, 9vw, 96px);
+  color: var(--accent);
+  margin: 0;
   line-height: 0.95;
 }
 
-.hero-content p {
+.subtitle {
   margin: 14px 0 0;
-  color: rgba(240, 233, 255, 0.85);
-  font-size: 1.05rem;
+  opacity: 0.9;
 }
 
-.small {
+.tagline {
+  margin: 8px 0 0;
   font-size: 0.95rem;
-  opacity: 0.85;
+  opacity: 0.8;
 }
 
-/* make fade faster and linear so it tracks scroll closely */
-.hero-text {
-  transition: opacity 0.18s linear; /* tuned for snappy behaviour when scrolling back up */
-}
-
-/* when scrolled far enough, hide hero text */
-.hero-content.scrolled .hero-text {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* floating blob unchanged */
+/* Floating blob behind */
 .floating-blob {
   position: absolute;
   width: 520px;
@@ -108,109 +80,58 @@ section {
   transition: opacity 0.6s ease;
 }
 
-.hero-content.scrolled ~ .floating-blob {
-  opacity: 0;
-}
+/* ========================= CAROUSEL ========================= */
 
-/* ===== CAROUSEL SECTION ===== */
 .carousel-section {
+  height: 100vh;
+  min-height: 560px;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 100vh;
-  min-height: 560px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: visible;
-  padding: 0;
-  margin: 0;
-  background: transparent;
   pointer-events: none;
-  z-index: 1;
-}
-
-.carousel-section.visible {
-  pointer-events: auto;
+  z-index: 3;
 }
 
 .carousel {
-  position: relative;
-  overflow: visible;
   opacity: 0;
+  transition: opacity 0.25s linear;
   pointer-events: none;
-  z-index: 10;
-  transition: opacity 220ms linear; /* a quick fade in to match text fade */
 }
 
-.carousel-section.scrolled .carousel {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* carousel internals unchanged (keep your styles) */
 .carousel-track {
-  position: relative;
-  height: 380px;
   width: 560px;
-  margin: 0 auto;
+  height: 380px;
+  position: relative;
   user-select: none;
 }
 
 .carousel-item {
   --size: 220px;
+  width: var(--size);
+  height: var(--size);
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 10px 30px rgba(4, 2, 10, 0.35);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: var(--size);
-  height: var(--size);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  background: rgba(255, 255, 255, 0.02);
-  color: var(--muted);
-  cursor: pointer;
-  transition: transform 0.38s cubic-bezier(0.2, 0.9, 0.2, 1), opacity 0.28s ease,
-    filter 0.28s ease, border-color 0.28s ease;
-  box-shadow: 0 10px 30px rgba(4, 2, 10, 0.35);
-  padding: 16px;
-  overflow: hidden;
-}
-
-.carousel-item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 140px;
-  background: linear-gradient(
-    135deg,
-    rgba(162, 89, 255, 0.15),
-    rgba(162, 89, 255, 0.05)
-  );
-  border-radius: 4px;
-  z-index: 0;
+  transition: transform 0.38s cubic-bezier(0.2, 0.9, 0.2, 1), opacity 0.28s ease;
 }
 
 .carousel-item .icon {
   font-size: 48px;
-  z-index: 1;
   margin-top: 32px;
   margin-bottom: 12px;
-}
-
-.carousel-item .label {
-  font-size: 0.95rem;
-  font-weight: 600;
-  opacity: 1;
-  z-index: 1;
-  text-align: center;
 }
 
 .carousel-item.off {
@@ -226,25 +147,21 @@ section {
   z-index: 20;
 }
 
-/* ===== CONTACT ===== */
+/* ========================= CONTACT ========================= */
+
 .contact {
+  height: var(--contact-height);
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  height: var(--contact-height);
+  background: #0b0711;
+  padding: 16px 12%;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px 12% !important;
-  background: linear-gradient(
-    180deg,
-    rgba(8, 6, 10, 0.9),
-    rgba(8, 6, 10, 0.98)
-  );
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
-  z-index: 90;
-  margin: 0;
+  z-index: 10;
 }
 
 .contact-inner {
@@ -253,102 +170,85 @@ section {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-}
-
-.contact h2 {
-  margin: 0;
-  font-size: 1.05rem;
-}
-
-.contact p {
-  margin: 0;
-  color: rgba(240, 233, 255, 0.85);
 }
 
 .email {
   color: var(--accent);
-  text-decoration: none;
   font-weight: 600;
+  text-decoration: none;
 }
 
-/* ===== ANIMATIONS ===== */
-/* Keep the fade-in-up animation for smaller elements outside hero,
-   but disable it for inline hero elements (we control hero fade with JS) */
-.fade-in-up {
-  opacity: 0;
-  transform: translateY(18px);
-  animation: fadeUp 1s forwards;
-}
+/* ========================= RESPONSIVE ========================= */
 
-/* disable the automatic animation *only* for elements inside the hero text block */
-.hero-text .fade-in-up {
-  animation: none;
-  opacity: 1;
-  transform: none;
-}
-
-.delay-1 {
-  animation-delay: 0.28s;
-}
-
-.delay-2 {
-  animation-delay: 0.56s;
-}
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* ===== RESPONSIVE ===== */
 @media (max-width: 880px) {
-  .hero-content h1 {
-    font-size: clamp(34px, 7.5vw, 64px);
+  .carousel-track {
+    width: 92%;
+    height: 320px;
   }
 
   .carousel-item {
     --size: 180px;
   }
-
-  .carousel-track {
-    width: 92%;
-    height: 320px;
-  }
 }
 
 @media (max-width: 560px) {
-  section {
-    padding: 48px 6%;
-  }
-
-  .contact {
-    padding: 12px 6% !important;
-    height: 84px;
-  }
-
-  .hero-content h1 {
-    font-size: 36px;
+  .carousel-track {
+    width: 100%;
+    height: 280px;
   }
 
   .carousel-item {
     --size: 160px;
-    padding: 12px;
-  }
-
-  .carousel-item .icon {
-    font-size: 36px;
-    margin-top: 20px;
-  }
-
-  .carousel-item::before {
-    height: 100px;
-  }
-
-  .carousel-track {
-    height: 280px;
-    width: 100%;
   }
 }
+/* Updated CSS */
+
+.container {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  text-align: center;
+}
+
+.hero-text {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.hero-title {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.carousel-section {
+  height: 100vh;
+  min-height: 560px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 3;
+  background: var(--bg);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.carousel {
+  opacity: 0;
+  transition: opacity 0.25s linear;
+  pointer-events: none;
+}
+
+/* ... Rest of your CSS code ... */

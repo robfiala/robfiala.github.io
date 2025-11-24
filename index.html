@@ -4,95 +4,49 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rob Fiala — Portfolio</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- in-page file-like menu (replaces the sections when opened) -->
-
-    <!-- HERO SECTION -->
-    <section class="hero">
+    <div class="container">
       <div class="hero-content">
         <div class="hero-text">
-          <h1 class="fade-in-up">robert fiala</h1>
-          <p class="fade-in-up delay-1">
-            Creative Designer & Visual Storyteller
-          </p>
-          <p class="fade-in-up delay-2 small">
-            Crafting original visuals with motion, depth, and personality.
+          <h1 class="hero-title">Rob Fiala</h1>
+          <p class="subtitle">Creative Designer & Visual Storyteller</p>
+          <p class="tagline">
+            Original visuals driven by motion, depth and personality.
           </p>
         </div>
       </div>
+      <div class="floating-blob"></div>
+    </div>
 
-      <!-- CAROUSEL OVERLAY - fades in as title fades out -->
-      <div class="carousel-section">
-        <div class="carousel" aria-roledescription="carousel">
-          <div class="carousel-track">
-            <button
-              class="carousel-item"
-              data-index="0"
-              aria-label="Photoshop work"
-            >
-              <div class="icon">🖼️</div>
-              <div class="label">Photoshop</div>
-            </button>
-            <button
-              class="carousel-item"
-              data-index="1"
-              aria-label="Photography"
-            >
-              <div class="icon">📸</div>
-              <div class="label">Photography</div>
-            </button>
-            <button
-              class="carousel-item"
-              data-index="2"
-              aria-label="Videography"
-            >
-              <div class="icon">🎥</div>
-              <div class="label">Videography</div>
-            </button>
-            <button
-              class="carousel-item"
-              data-index="3"
-              aria-label="Illustration"
-            >
-              <div class="icon">✏️</div>
-              <div class="label">Illustration</div>
-            </button>
-            <button class="carousel-item" data-index="4" aria-label="Branding">
-              <div class="icon">🎨</div>
-              <div class="label">Branding</div>
-            </button>
+    <section class="carousel-section">
+      <div class="carousel">
+        <div class="carousel-track">
+          <!-- EXAMPLE ITEMS — replace with your own later -->
+          <div class="carousel-item">
+            <div class="icon">🎨</div>
+            <div class="label">Brand Design</div>
+          </div>
+
+          <div class="carousel-item">
+            <div class="icon">🖥️</div>
+            <div class="label">UI / UX</div>
+          </div>
+
+          <div class="carousel-item">
+            <div class="icon">📸</div>
+            <div class="label">Photography</div>
           </div>
         </div>
       </div>
-
-      <div class="floating-blob"></div>
     </section>
 
-    <!-- Spacer to allow scrolling through hero animation -->
-    <div style="height: 200vh"></div>
-
-    <!-- CONTACT (now also contains About content) -->
-    <section id="contact" class="contact reveal">
+    <section class="contact">
       <div class="contact-inner">
-        <div class="contact-left">
-          <h2>Contact</h2>
-          <p>
-            I'm a multidisciplinary creator who blends visual design,
-            storytelling, and motion to bring ideas to life. I focus on
-            original, recognizable creative identity with smooth, subtle
-            animations.
-          </p>
-        </div>
-        <div class="contact-right">
-          <p>Want to work together?</p>
-          <a class="email" href="mailto:your@email.com">your@email.com</a>
-        </div>
+        <h2>Want to work together?</h2>
+        <p>Let’s create something unique.</p>
+        <a class="email" href="mailto:your@email.com">your@email.com</a>
       </div>
     </section>
 
