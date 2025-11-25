@@ -27,6 +27,8 @@
   /* Spacing & Effects */
   --border-radius: 12px;
   --transition-smooth: cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* Legacy alias */
+  --bg: var(--bg-primary);
 }
 
 * {
@@ -314,7 +316,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
+  background: var(--bg-primary);
   padding: 80px 5%;
   position: relative;
 }
@@ -518,7 +520,8 @@ button.contact-submit:hover {
 }
 
 .gallery-section.visible .brand-divider,
-.before-after-section.visible .brand-divider {
+.before-after-section.visible .brand-divider,
+.contact-panel.visible .brand-divider {
   opacity: 1;
   transform: scaleX(1);
 }
@@ -549,7 +552,7 @@ button.contact-submit:hover {
 .before-after-section {
   min-height: 100vh;
   padding: 100px 5%;
-  background: var(--bg);
+  background: var(--bg-primary);
   display: flex;
   align-items: center;
   justify-content: center;
