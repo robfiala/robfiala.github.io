@@ -332,6 +332,174 @@ body {
   margin: 0 0 40px;
   color: var(--text-primary);
 }
+/* Contact form layout */
+.contact-intro {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 680px;
+  margin: 0 auto 48px;
+  line-height: 1.5;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 48px;
+  align-items: start;
+  margin-top: 10px;
+}
+
+.contact-box {
+  background: var(--gray-900);
+  border: 1px solid var(--gray-700);
+  border-radius: 20px;
+  padding: 32px clamp(24px, 4vw, 40px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.contact-box h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 20px;
+  letter-spacing: -0.5px;
+}
+
+form#contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-row label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+}
+
+.form-row input,
+.form-row textarea {
+  width: 100%;
+  background: var(--gray-800);
+  border: 1px solid var(--gray-700);
+  border-radius: 14px;
+  padding: 16px 18px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  resize: vertical;
+  min-height: 54px;
+  transition: border-color 0.3s var(--transition-smooth),
+    background 0.3s var(--transition-smooth);
+}
+
+.form-row input:focus,
+.form-row textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  background: var(--gray-700);
+}
+
+.form-row textarea {
+  min-height: 140px;
+}
+
+.form-submit {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+button.contact-submit {
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: var(--accent-primary);
+  color: var(--text-primary);
+  padding: 16px 36px;
+  border-radius: 40px;
+  font-size: 0.95rem;
+  transition: all 0.35s var(--transition-smooth);
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+button.contact-submit:hover {
+  background: var(--accent-hover);
+  transform: translateY(-3px);
+}
+
+.contact-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.contact-meta a {
+  color: var(--accent-hover);
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+}
+
+.contact-meta a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 2px;
+  background: var(--accent-primary);
+  transition: width 0.4s var(--transition-smooth);
+}
+
+.contact-meta a:hover::after {
+  width: 100%;
+}
+
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.social-links a {
+  font-size: 0.8rem;
+  padding: 8px 16px;
+  border: 1px solid var(--gray-700);
+  border-radius: 30px;
+  text-decoration: none;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.03);
+  transition: all 0.3s var(--transition-smooth);
+  letter-spacing: 0.5px;
+}
+
+.social-links a:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+.contact-note {
+  margin-top: 28px;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
 
 /* Brand Divider Element */
 .brand-divider {
@@ -638,6 +806,37 @@ body {
   .gallery-section,
   .before-after-section {
     padding: 80px 4%;
+  }
+}
+
+/* ================= ANIMATION UTILITIES ================= */
+.anim-fade {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s var(--transition-smooth),
+    transform 0.9s var(--transition-smooth);
+  will-change: opacity, transform;
+}
+
+.anim-fade.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.parallax-heading {
+  will-change: transform;
+  transition: transform 0.2s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-fade {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+  .parallax-heading {
+    transition: none;
+    transform: none !important;
   }
 }
 

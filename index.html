@@ -11,7 +11,8 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- Removed stray duplicate stylesheet reference -->
   </head>
   <body>
     <!-- Minimal Navigation -->
@@ -20,7 +21,12 @@
         <span class="logo-signature">Rob Fiala</span>
         <span class="logo-tagline">Visual Stories</span>
       </a>
-      <a href="#contact" class="nav-cta">Get in Touch</a>
+      <div style="display: flex; gap: 24px; align-items: center">
+        <a class="nav-cta" href="pictures/index.html">Pictures</a>
+        <a class="nav-cta" href="photoshop/index.html">Photoshop</a>
+        <a class="nav-cta" href="about/index.html">About</a>
+        <a class="nav-cta" href="#contact">Contact</a>
+      </div>
     </nav>
 
     <!-- Full-Screen Hero Panels -->
@@ -58,9 +64,9 @@
     <section class="gallery-section">
       <div class="brand-divider"></div>
       <div class="section-container">
-        <h2 class="section-heading">Photography</h2>
+        <h2 class="section-heading parallax-heading anim-fade">Photography</h2>
         <div class="gallery-grid">
-          <div class="gallery-item">
+          <div class="gallery-item anim-fade">
             <img
               src="https://picsum.photos/seed/photo1/800/600"
               alt="Photography work 1"
@@ -69,7 +75,7 @@
               <span class="gallery-label">Urban Stories</span>
             </div>
           </div>
-          <div class="gallery-item">
+          <div class="gallery-item anim-fade">
             <img
               src="https://picsum.photos/seed/photo2/800/600"
               alt="Photography work 2"
@@ -78,7 +84,7 @@
               <span class="gallery-label">Natural Light</span>
             </div>
           </div>
-          <div class="gallery-item">
+          <div class="gallery-item anim-fade">
             <img
               src="https://picsum.photos/seed/photo3/800/600"
               alt="Photography work 3"
@@ -87,7 +93,7 @@
               <span class="gallery-label">Portraits</span>
             </div>
           </div>
-          <div class="gallery-item">
+          <div class="gallery-item anim-fade">
             <img
               src="https://picsum.photos/seed/photo4/800/600"
               alt="Photography work 4"
@@ -96,7 +102,7 @@
               <span class="gallery-label">Landscapes</span>
             </div>
           </div>
-          <div class="gallery-item">
+          <div class="gallery-item anim-fade">
             <img
               src="https://picsum.photos/seed/photo5/800/600"
               alt="Photography work 5"
@@ -105,7 +111,7 @@
               <span class="gallery-label">Street Life</span>
             </div>
           </div>
-          <div class="gallery-item">
+          <div class="gallery-item anim-fade">
             <img
               src="https://picsum.photos/seed/photo6/800/600"
               alt="Photography work 6"
@@ -134,13 +140,15 @@
     <!-- Before/After Section -->
     <section class="before-after-section">
       <div class="section-container">
-        <h2 class="section-heading">Photoshop Artistry</h2>
+        <h2 class="section-heading parallax-heading anim-fade">
+          Photoshop Artistry
+        </h2>
         <p class="section-subheading">
           Hover or drag to reveal transformations
         </p>
 
         <div class="before-after-grid">
-          <div class="before-after-container" data-ba="1">
+          <div class="before-after-container anim-fade" data-ba="1">
             <div class="ba-wrapper">
               <img
                 src="https://picsum.photos/seed/before1/900/600"
@@ -174,7 +182,7 @@
             </div>
           </div>
 
-          <div class="before-after-container" data-ba="2">
+          <div class="before-after-container anim-fade" data-ba="2">
             <div class="ba-wrapper">
               <img
                 src="https://picsum.photos/seed/before2/900/600"
@@ -228,7 +236,81 @@
     <section id="contact" class="contact-panel">
       <div class="contact-content">
         <h2>Let's Create Together</h2>
-        <a class="cta-button" href="mailto:your@email.com">Get in Touch</a>
+        <p class="contact-intro">
+          Have a project, collaboration idea, or just want to say hello? Reach
+          out via the form or connect directly through email and socials. I
+          answer most inquiries within 24 hours.
+        </p>
+        <div class="contact-grid">
+          <div class="contact-box">
+            <h3>Send a Message</h3>
+            <form id="contact-form" novalidate>
+              <div class="form-row">
+                <label for="name">Name</label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  placeholder="Your name"
+                />
+              </div>
+              <div class="form-row">
+                <label for="email">Email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="you@example.com"
+                />
+              </div>
+              <div class="form-row">
+                <label for="message">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  placeholder="Tell me about your idea"
+                ></textarea>
+              </div>
+              <div class="form-submit">
+                <button type="submit" class="contact-submit">
+                  Send Message
+                </button>
+              </div>
+              <p class="contact-note">Your info is only used to reply.</p>
+            </form>
+          </div>
+          <div class="contact-box">
+            <h3>Connect Directly</h3>
+            <div class="contact-meta">
+              <div>
+                <strong>Email:</strong>
+                <a href="mailto:your@email.com">your@email.com</a>
+              </div>
+              <div><strong>Location:</strong> Remote / Global</div>
+              <div>
+                <strong>Social:</strong>
+                <div class="social-links">
+                  <a href="#" aria-label="Instagram">Instagram</a>
+                  <a href="#" aria-label="LinkedIn">LinkedIn</a>
+                  <a href="#" aria-label="Dribbble">Dribbble</a>
+                  <a href="#" aria-label="Behance">Behance</a>
+                </div>
+              </div>
+              <div>
+                <strong>Status:</strong> Currently available for select
+                freelance & collaborative work.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 60px; text-align: center">
+          <a href="contact/" class="cta-button" style="min-width: 240px"
+            >Open Full Contact Page →</a
+          >
+        </div>
       </div>
     </section>
 

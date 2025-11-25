@@ -246,6 +246,8 @@ function initSectionReveal() {
       if (entry.isIntersecting) {
         entry.target.style.opacity = "1";
         entry.target.style.transform = "translateY(0)";
+        // Add visible class for styled elements like .brand-divider
+        entry.target.classList.add("visible");
       }
     });
   }, revealOptions);
@@ -259,6 +261,57 @@ function initSectionReveal() {
   });
 }
 
+/* ---------------------------------------------------------
+   GENERIC ELEMENT FADE-IN
+   --------------------------------------------------------- */
+function initElementFades() {
+  const fadeItems = document.querySelectorAll(".anim-fade");
+  if (!fadeItems.length) return;
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  fadeItems.forEach((el) => io.observe(el));
+}
+
+/* ---------------------------------------------------------
+   PARALLAX HEADINGS (LIGHTWEIGHT)
+   --------------------------------------------------------- */
+function initParallaxHeadings() {
+  const headings = document.querySelectorAll(".parallax-heading");
+  if (!headings.length) return;
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  if (reduceMotion || window.innerWidth < 680) return;
+
+  function update() {
+    const scrollY = window.scrollY;
+    headings.forEach((h) => {
+      const rect = h.getBoundingClientRect();
+      const offset = (rect.top + scrollY) * 0.0008; // subtle
+      h.style.transform = `translateY(${offset * 18}px)`; // small shift
+    });
+  }
+  window.addEventListener(
+    "scroll",
+    () => {
+      requestAnimationFrame(update);
+    },
+    { passive: true }
+  );
+  update();
+}
+
 // Initialize on load
 window.addEventListener("load", () => {
   initScrollPanels();
@@ -266,6 +319,9 @@ window.addEventListener("load", () => {
   initGalleryInteractions();
   initNavEnhancements();
   initSectionReveal();
+  initElementFades();
+  initParallaxHeadings();
+  initContactForm();
 
   // Add scroll listener for parallax
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -279,3 +335,36 @@ window.addEventListener("load", () => {
     firstPanel.classList.add("in-view");
   }
 });
+
+/* ---------------------------------------------------------
+   CONTACT FORM HANDLER
+   --------------------------------------------------------- */
+function initContactForm() {
+  const form = document.getElementById("contact-form");
+  if (!form) return;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = form.querySelector("#name").value.trim();
+    const email = form.querySelector("#email").value.trim();
+    const message = form.querySelector("#message").value.trim();
+
+    if (!name || !email || !message) {
+      alert("Please fill in all fields before sending.");
+      return;
+    }
+
+    // Basic email format check
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      alert("Enter a valid email address.");
+      return;
+    }
+
+    const mailto = `mailto:your@email.com?subject=${encodeURIComponent(
+      "Portfolio Inquiry from " + name
+    )}&body=${encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+    )}`;
+    window.location.href = mailto;
+  });
+}

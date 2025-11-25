@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact — Rob Fiala</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <nav class="minimal-nav">
+      <a href="../index.html" class="nav-logo">
+        <span class="logo-signature">Rob Fiala</span>
+        <span class="logo-tagline">Visual Stories</span>
+      </a>
+      <div style="display: flex; gap: 24px; align-items: center">
+        <a class="nav-cta" href="../index.html">Home</a>
+        <a class="nav-cta" href="../pictures/index.html">Pictures</a>
+        <a class="nav-cta" href="../photoshop/index.html">Photoshop</a>
+        <a class="nav-cta" href="../about/index.html">About</a>
+        <a class="nav-cta" href="../contact/index.html" aria-current="page"
+          >Contact</a
+        >
+      </div>
+    </nav>
+
+    <section class="contact-panel" style="padding-top: 160px">
+      <div class="contact-content">
+        <h2>Get In Touch</h2>
+        <p class="contact-intro">
+          I'd love to hear about your project or collaboration idea. Use the
+          form or reach out directly via email and socials. Responses usually
+          within 24 hours.
+        </p>
+        <div class="contact-grid">
+          <div class="contact-box">
+            <h3>Message Form</h3>
+            <form id="contact-form" novalidate>
+              <div class="form-row">
+                <label for="name">Name</label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  placeholder="Your name"
+                />
+              </div>
+              <div class="form-row">
+                <label for="email">Email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="you@example.com"
+                />
+              </div>
+              <div class="form-row">
+                <label for="message">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  placeholder="Tell me about your idea"
+                ></textarea>
+              </div>
+              <div class="form-submit">
+                <button type="submit" class="contact-submit">
+                  Send Message
+                </button>
+              </div>
+              <p class="contact-note">No spam. Your details are private.</p>
+            </form>
+          </div>
+          <div class="contact-box">
+            <h3>Direct Contact</h3>
+            <div class="contact-meta">
+              <div>
+                <strong>Email:</strong>
+                <a href="mailto:your@email.com">your@email.com</a>
+              </div>
+              <div><strong>Location:</strong> Remote / Global</div>
+              <div>
+                <strong>Social:</strong>
+                <div class="social-links">
+                  <a href="#" aria-label="Instagram">Instagram</a>
+                  <a href="#" aria-label="LinkedIn">LinkedIn</a>
+                  <a href="#" aria-label="Dribbble">Dribbble</a>
+                  <a href="#" aria-label="Behance">Behance</a>
+                </div>
+              </div>
+              <div>
+                <strong>Status:</strong> Available for select freelance &
+                collaborations.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="../script.js" defer></script>
+  </body>
+</html>
