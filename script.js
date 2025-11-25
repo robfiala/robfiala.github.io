@@ -1,249 +1,281 @@
 /* ---------------------------------------------------------
-   SCROLL-DRIVEN HERO + CAROUSEL ANIMATION (cleaned)
+   VERTICAL FULL-SCREEN SCROLL EXPERIENCE
+   Inspired by landonorris.com with fade-in panels
    --------------------------------------------------------- */
 
-// Elements
-const revealElements = document.querySelectorAll(".reveal");
-const heroContentEl = document.querySelector(".hero-content");
-const heroTextEl = heroContentEl
-  ? heroContentEl.querySelector(".hero-text")
-  : null;
-const carouselEl = document.querySelector(".carousel");
-const carouselSectionEl = document.querySelector(".carousel-section");
+// Intersection Observer for panel fade-in on scroll
+function initScrollPanels() {
+  const panels = document.querySelectorAll(".hero-panel");
 
-// Motion state
-const heroMotion = { start: 0, end: 0, ready: false };
+  const observerOptions = {
+    root: null,
+    threshold: 0.3,
+    rootMargin: "0px",
+  };
 
-function revealOnScroll() {
-  const windowHeight = window.innerHeight;
-  revealElements.forEach((el) => {
-    const top = el.getBoundingClientRect().top;
-    if (top < windowHeight - 100) el.classList.add("visible");
-  });
-}
-
-function initHeroInitial() {
-  if (!heroContentEl) return;
-  // reset transforms and opacities
-  heroContentEl.style.transform = "translateX(-50%) translateY(0px)";
-  if (heroTextEl) heroTextEl.style.opacity = "1";
-  if (carouselEl) {
-    carouselEl.style.opacity = "0";
-    carouselEl.style.pointerEvents = "none";
-  }
-}
-
-function initHeroMotion() {
-  if (!heroContentEl) return;
-  const vh = window.innerHeight;
-  const rect = heroContentEl.getBoundingClientRect();
-  // Motion travel: from top (0) to centered position
-  heroMotion.start = 0;
-  heroMotion.end = Math.max(0, Math.round(vh / 2 - rect.height / 2));
-  heroMotion.ready = true;
-  heroContentEl.style.transform = `translateX(-50%) translateY(${heroMotion.start}px)`;
-  adjustScrollSpace();
-}
-
-function adjustScrollSpace() {
-  const spacer = document.querySelector(".scroll-space");
-  if (!spacer) return;
-  const vh = window.innerHeight;
-  const travel = heroMotion.end;
-  // Provide enough scroll height: hero travel + extra for fade handoff
-  const needed = travel + vh * 0.8;
-  spacer.style.height = Math.max(needed, vh * 1.5) + "px";
-}
-
-function onScrollToggle() {
-  if (!heroMotion.ready) initHeroMotion();
-  const scrolled = window.scrollY || document.documentElement.scrollTop;
-  const travel = heroMotion.end || 1;
-  const progress = Math.max(0, Math.min(scrolled / travel, 1)); // 0..1 over hero travel
-
-  revealOnScroll();
-  if (!heroContentEl) return;
-
-  const currentOffset =
-    heroMotion.start + (heroMotion.end - heroMotion.start) * progress;
-  heroContentEl.style.transform = `translateX(-50%) translateY(${currentOffset}px)`;
-
-  // Fade text between 55% and 85% of travel
-  if (heroTextEl) {
-    const t = (progress - 0.55) / 0.3; // 0->1
-    const textOpacity = 1 - Math.max(0, Math.min(t, 1));
-    heroTextEl.style.opacity = String(textOpacity);
-  }
-
-  // Carousel fades (earlier start @45%) + bbox debug + minimum visibility
-  if (carouselEl) {
-    const c = (progress - 0.45) / 0.4; // fade 45% -> 85%
-    const carouselOpacity = Math.max(0, Math.min(c, 1));
-    const appliedOpacity =
-      carouselOpacity < 0.2 && progress > 0.65 ? 0.2 : carouselOpacity;
-    carouselEl.style.opacity = String(appliedOpacity);
-    carouselEl.style.pointerEvents = appliedOpacity > 0.2 ? "auto" : "none";
-    if (carouselSectionEl) {
-      carouselSectionEl.style.pointerEvents =
-        appliedOpacity > 0.2 ? "auto" : "none";
-      carouselSectionEl.style.opacity = String(appliedOpacity);
-    }
-    // Hide hero content after overlap to avoid covering perception
-    if (heroContentEl)
-      heroContentEl.style.visibility = progress > 0.62 ? "hidden" : "visible";
-    const centerItem = carouselEl.querySelector(".carousel-item.center");
-    if (centerItem) {
-      const r = centerItem.getBoundingClientRect();
-      console.log(
-        "[CenterBBox]",
-        r.left.toFixed(0),
-        r.top.toFixed(0),
-        r.width.toFixed(0),
-        r.height.toFixed(0)
-      );
-    } else {
-      console.log("[CenterBBox] none");
-    }
-    console.log(
-      "[CarouselOpacity]",
-      progress.toFixed(3),
-      carouselOpacity.toFixed(3),
-      "applied",
-      appliedOpacity.toFixed(3)
-    );
-  }
-
-  // End state classes
-  if (progress >= 1) {
-    heroContentEl.classList.add("scrolled");
-    if (carouselSectionEl) carouselSectionEl.classList.add("scrolled");
-  } else {
-    heroContentEl.classList.remove("scrolled");
-    if (carouselSectionEl) carouselSectionEl.classList.remove("scrolled");
-  }
-}
-
-/* ---------------- CAROUSEL (keeps previous behavior) ---------------- */
-function initCarousel() {
-  const trackEl = document.querySelector(".carousel-track");
-  if (!trackEl) return;
-
-  const items = Array.from(trackEl.querySelectorAll(".carousel-item"));
-  const len = items.length;
-  if (!len) return;
-
-  // Immediate background init
-  items.forEach((it) => {
-    const bg = it.getAttribute("data-bg");
-    if (bg) it.style.backgroundImage = `url(${bg})`;
-  });
-
-  let current = 0;
-  const debugFlat = false; // ensure transform animations active
-
-  function setCarousel(index) {
-    current = ((index % len) + len) % len;
-    const trackWidth = trackEl.clientWidth || 600;
-    // For full-width panels, spacing equals track width so neighbors sit just off-screen
-    const spacing = trackWidth;
-    items.forEach((it, i) => {
-      it.classList.remove("left", "right", "center", "off");
-      let delta = i - current;
-      while (delta > len / 2) delta -= len;
-      while (delta < -len / 2) delta += len;
-      if (delta === 0) {
-        it.classList.add("center");
-        it.style.transform = `translateX(0px)`;
-        it.style.opacity = "1";
-        it.style.zIndex = "40";
-        it.style.pointerEvents = "auto";
-        it.setAttribute("aria-current", "true");
-      } else if (delta === -1) {
-        it.classList.add("left");
-        it.style.transform = `translateX(${-spacing}px)`;
-        it.style.opacity = ".0";
-        it.style.zIndex = "25";
-        it.style.pointerEvents = "auto";
-        it.removeAttribute("aria-current");
-      } else if (delta === 1) {
-        it.classList.add("right");
-        it.style.transform = `translateX(${spacing}px)`;
-        it.style.opacity = ".0";
-        it.style.zIndex = "25";
-        it.style.pointerEvents = "auto";
-        it.removeAttribute("aria-current");
-      } else {
-        it.classList.add("off");
-        const out = delta > 0 ? spacing * 2 : -spacing * 2;
-        it.style.transform = `translateX(${out}px)`;
-        it.style.opacity = "0";
-        it.style.zIndex = "10";
-        it.style.pointerEvents = "none";
-        it.removeAttribute("aria-current");
+  const panelObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in-view");
       }
+    });
+  }, observerOptions);
+
+  panels.forEach((panel) => {
+    panelObserver.observe(panel);
+  });
+}
+
+// Parallax effect on scroll for background images
+let ticking = false;
+
+function updateParallax() {
+  const panels = document.querySelectorAll(".hero-panel.in-view");
+  const scrolled = window.scrollY;
+
+  panels.forEach((panel) => {
+    const panelTop = panel.offsetTop;
+    const panelHeight = panel.offsetHeight;
+    const panelBg = panel.querySelector(".panel-bg");
+
+    if (
+      scrolled + window.innerHeight > panelTop &&
+      scrolled < panelTop + panelHeight
+    ) {
+      const offset = (scrolled - panelTop) * 0.4;
+      if (panelBg) {
+        panelBg.style.transform = `translateY(${offset}px) scale(1)`;
+      }
+    }
+  });
+
+  ticking = false;
+}
+
+function onScroll() {
+  if (!ticking) {
+    requestAnimationFrame(updateParallax);
+    ticking = true;
+  }
+}
+
+// Hide scroll indicator after first scroll
+function hideScrollIndicator() {
+  const indicator = document.querySelector(".scroll-indicator");
+  if (indicator && window.scrollY > 100) {
+    indicator.style.opacity = "0";
+    window.removeEventListener("scroll", hideScrollIndicator);
+  }
+}
+
+/* ---------------------------------------------------------
+   BEFORE/AFTER SLIDER FUNCTIONALITY
+   --------------------------------------------------------- */
+function initBeforeAfterSliders() {
+  const containers = document.querySelectorAll(".before-after-container");
+
+  containers.forEach((container) => {
+    const wrapper = container.querySelector(".ba-wrapper");
+    const slider = container.querySelector(".ba-slider");
+    const afterImage = container.querySelector(".ba-after");
+    let isDragging = false;
+    let rafId = null;
+
+    function updateSlider(clientX) {
+      const rect = wrapper.getBoundingClientRect();
+      let x = clientX - rect.left;
+      x = Math.max(0, Math.min(x, rect.width));
+      const percent = (x / rect.width) * 100;
+
+      slider.style.left = `${percent}%`;
+      afterImage.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+    }
+
+    // Mouse events
+    wrapper.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      updateSlider(e.clientX);
+      wrapper.style.cursor = "ew-resize";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        updateSlider(e.clientX);
+        rafId = null;
+      });
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      wrapper.style.cursor = "ew-resize";
+    });
+
+    // Touch events
+    wrapper.addEventListener(
+      "touchstart",
+      (e) => {
+        isDragging = true;
+        updateSlider(e.touches[0].clientX);
+      },
+      { passive: true }
+    );
+
+    wrapper.addEventListener(
+      "touchmove",
+      (e) => {
+        if (!isDragging) return;
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          updateSlider(e.touches[0].clientX);
+          rafId = null;
+        });
+      },
+      { passive: true }
+    );
+
+    wrapper.addEventListener("touchend", () => {
+      isDragging = false;
+    });
+
+    // Hover effect - reveal on hover
+    wrapper.addEventListener("mouseenter", () => {
+      if (!isDragging) {
+        slider.style.transition = "left 0.6s cubic-bezier(0.22, 0.61, 0.36, 1)";
+        afterImage.style.transition =
+          "clip-path 0.6s cubic-bezier(0.22, 0.61, 0.36, 1)";
+        slider.style.left = "75%";
+        afterImage.style.clipPath = "inset(0 25% 0 0)";
+      }
+    });
+
+    wrapper.addEventListener("mouseleave", () => {
+      if (!isDragging) {
+        slider.style.transition = "left 0.6s cubic-bezier(0.22, 0.61, 0.36, 1)";
+        afterImage.style.transition =
+          "clip-path 0.6s cubic-bezier(0.22, 0.61, 0.36, 1)";
+        slider.style.left = "50%";
+        afterImage.style.clipPath = "inset(0 50% 0 0)";
+      }
+    });
+
+    // Reset transitions when dragging starts
+    wrapper.addEventListener("mousedown", () => {
+      slider.style.transition = "none";
+      afterImage.style.transition = "none";
+    });
+
+    wrapper.addEventListener(
+      "touchstart",
+      () => {
+        slider.style.transition = "none";
+        afterImage.style.transition = "none";
+      },
+      { passive: true }
+    );
+  });
+}
+
+/* ---------------------------------------------------------
+   GALLERY HOVER ENHANCEMENTS
+   --------------------------------------------------------- */
+function initGalleryInteractions() {
+  const galleryItems = document.querySelectorAll(".gallery-item");
+
+  galleryItems.forEach((item) => {
+    item.addEventListener("mouseenter", () => {
+      // Add subtle shadow pulse
+      item.style.boxShadow = "0 12px 48px rgba(162, 89, 255, 0.15)";
+    });
+
+    item.addEventListener("mouseleave", () => {
+      item.style.boxShadow = "none";
+    });
+
+    // Optional: Add click handler for lightbox or detail view
+    item.addEventListener("click", () => {
+      // Could open a modal/lightbox here
+      console.log("Gallery item clicked:", item);
+    });
+  });
+}
+
+/* ---------------------------------------------------------
+   ENHANCED NAV MICRO-INTERACTIONS
+   --------------------------------------------------------- */
+function initNavEnhancements() {
+  const navLogo = document.querySelector(".nav-logo");
+  const navCta = document.querySelector(".nav-cta");
+
+  if (navLogo) {
+    navLogo.addEventListener("mouseenter", () => {
+      navLogo.style.transform = "scale(1.05)";
+    });
+    navLogo.addEventListener("mouseleave", () => {
+      navLogo.style.transform = "scale(1)";
     });
   }
 
-  // initial paint
-  requestAnimationFrame(() => setCarousel(0));
-
-  // clicks
-  items.forEach((it, i) =>
-    it.addEventListener("click", (e) => {
-      e.preventDefault();
-      setCarousel(i);
-    })
-  );
-
-  // pointer/touch swipe
-  let pointerStartX = 0;
-  let pointerDelta = 0;
-  let isDown = false;
-
-  function onPointerDown(e) {
-    isDown = true;
-    pointerStartX =
-      (e.touches && e.touches[0] && e.touches[0].clientX) || e.clientX;
-    pointerDelta = 0;
+  if (navCta) {
+    navCta.addEventListener("mouseenter", () => {
+      navCta.style.transform = "translateY(-2px)";
+    });
+    navCta.addEventListener("mouseleave", () => {
+      navCta.style.transform = "translateY(0)";
+    });
   }
-  function onPointerMove(e) {
-    if (!isDown) return;
-    const x = (e.touches && e.touches[0] && e.touches[0].clientX) || e.clientX;
-    pointerDelta = x - pointerStartX;
-  }
-  function onPointerUp() {
-    if (!isDown) return;
-    isDown = false;
-    const threshold = 40;
-    if (pointerDelta > threshold) setCarousel(current - 1);
-    else if (pointerDelta < -threshold) setCarousel(current + 1);
-    pointerDelta = 0;
-  }
-
-  trackEl.addEventListener("pointerdown", onPointerDown);
-  window.addEventListener("pointermove", onPointerMove);
-  window.addEventListener("pointerup", onPointerUp);
-  trackEl.addEventListener("touchstart", onPointerDown, { passive: true });
-  trackEl.addEventListener("touchmove", onPointerMove, { passive: true });
-  trackEl.addEventListener("touchend", onPointerUp);
 }
 
-/* ---------------- EVENT BINDINGS ---------------- */
-window.addEventListener("scroll", onScrollToggle, { passive: true });
+/* ---------------------------------------------------------
+   SMOOTH SECTION REVEAL
+   --------------------------------------------------------- */
+function initSectionReveal() {
+  const sections = document.querySelectorAll(
+    ".gallery-section, .before-after-section"
+  );
 
+  const revealOptions = {
+    root: null,
+    threshold: 0.15,
+    rootMargin: "0px",
+  };
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = "1";
+        entry.target.style.transform = "translateY(0)";
+      }
+    });
+  }, revealOptions);
+
+  sections.forEach((section) => {
+    section.style.opacity = "0";
+    section.style.transform = "translateY(40px)";
+    section.style.transition =
+      "opacity 1s cubic-bezier(0.22, 0.61, 0.36, 1), transform 1s cubic-bezier(0.22, 0.61, 0.36, 1)";
+    revealObserver.observe(section);
+  });
+}
+
+// Initialize on load
 window.addEventListener("load", () => {
-  initHeroInitial();
-  initHeroMotion();
-  initCarousel();
-  onScrollToggle();
-});
+  initScrollPanels();
+  initBeforeAfterSliders();
+  initGalleryInteractions();
+  initNavEnhancements();
+  initSectionReveal();
 
-let resizeTimer = null;
-window.addEventListener("resize", () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    initHeroInitial();
-    initHeroMotion();
-    onScrollToggle();
-  }, 120);
+  // Add scroll listener for parallax
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Hide scroll indicator on first scroll
+  window.addEventListener("scroll", hideScrollIndicator, { passive: true });
+
+  // Show first panel immediately
+  const firstPanel = document.querySelector(".hero-panel");
+  if (firstPanel) {
+    firstPanel.classList.add("in-view");
+  }
 });

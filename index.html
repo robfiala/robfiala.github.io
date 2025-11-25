@@ -4,78 +4,231 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rob Fiala — Portfolio</title>
-    <!-- Custom hero title font -->
+    <!-- Personal Branding Typography System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-text">
-          <h1 class="hero-title">Rob Fiala</h1>
-          <p class="subtitle">Creative Designer & Visual Storyteller</p>
-          <p class="tagline">
-            Original visuals driven by motion, depth and personality.
-          </p>
-        </div>
-      </div>
-      <div class="floating-blob"></div>
-    </div>
+    <!-- Minimal Navigation -->
+    <nav class="minimal-nav">
+      <a href="#" class="nav-logo">
+        <span class="logo-signature">Rob Fiala</span>
+        <span class="logo-tagline">Visual Stories</span>
+      </a>
+      <a href="#contact" class="nav-cta">Get in Touch</a>
+    </nav>
 
-    <section class="carousel-section">
-      <div class="carousel">
-        <div class="carousel-track">
-          <!-- Full-width items with background images -->
-          <button
-            class="carousel-item"
-            data-bg="https://picsum.photos/seed/brand/1600/900"
-            aria-label="Brand Design"
-          >
-            <div class="label">Brand Design</div>
-          </button>
-          <button
-            class="carousel-item"
-            data-bg="https://picsum.photos/seed/uiux/1600/900"
-            aria-label="UI / UX"
-          >
-            <div class="label">UI / UX</div>
-          </button>
-          <button
-            class="carousel-item"
-            data-bg="https://picsum.photos/seed/photo/1600/900"
-            aria-label="Photography"
-          >
-            <div class="label">Photography</div>
-          </button>
-          <button
-            class="carousel-item"
-            data-bg="https://picsum.photos/seed/motion/1600/900"
-            aria-label="Motion Design"
-          >
-            <div class="label">Motion Design</div>
-          </button>
-          <button
-            class="carousel-item"
-            data-bg="https://picsum.photos/seed/illustration/1600/900"
-            aria-label="Illustration"
-          >
-            <div class="label">Illustration</div>
-          </button>
+    <!-- Full-Screen Hero Panels -->
+    <section class="hero-panel" id="panel-1">
+      <div
+        class="panel-bg"
+        style="
+          background-image: url('https://picsum.photos/seed/hero1/1920/1080');
+        "
+      ></div>
+      <div class="panel-content">
+        <h1 class="panel-title">Rob Fiala</h1>
+        <p class="panel-subtitle">Visual Storyteller</p>
+      </div>
+      <div class="scroll-indicator">
+        <span class="scroll-text">Scroll</span>
+        <span class="scroll-line"></span>
+      </div>
+    </section>
+
+    <section class="hero-panel" id="panel-2">
+      <div
+        class="panel-bg"
+        style="
+          background-image: url('https://picsum.photos/seed/hero2/1920/1080');
+        "
+      ></div>
+      <div class="panel-content">
+        <h2 class="panel-heading">Captured</h2>
+        <p class="panel-text">Moments frozen through the lens</p>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+      <div class="brand-divider"></div>
+      <div class="section-container">
+        <h2 class="section-heading">Photography</h2>
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <img
+              src="https://picsum.photos/seed/photo1/800/600"
+              alt="Photography work 1"
+            />
+            <div class="gallery-overlay">
+              <span class="gallery-label">Urban Stories</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img
+              src="https://picsum.photos/seed/photo2/800/600"
+              alt="Photography work 2"
+            />
+            <div class="gallery-overlay">
+              <span class="gallery-label">Natural Light</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img
+              src="https://picsum.photos/seed/photo3/800/600"
+              alt="Photography work 3"
+            />
+            <div class="gallery-overlay">
+              <span class="gallery-label">Portraits</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img
+              src="https://picsum.photos/seed/photo4/800/600"
+              alt="Photography work 4"
+            />
+            <div class="gallery-overlay">
+              <span class="gallery-label">Landscapes</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img
+              src="https://picsum.photos/seed/photo5/800/600"
+              alt="Photography work 5"
+            />
+            <div class="gallery-overlay">
+              <span class="gallery-label">Street Life</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img
+              src="https://picsum.photos/seed/photo6/800/600"
+              alt="Photography work 6"
+            />
+            <div class="gallery-overlay">
+              <span class="gallery-label">Architecture</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Spacer to allow scroll for hero motion -->
-    <div class="scroll-space" aria-hidden="true"></div>
+    <section class="hero-panel" id="panel-3">
+      <div
+        class="panel-bg"
+        style="
+          background-image: url('https://picsum.photos/seed/hero3/1920/1080');
+        "
+      ></div>
+      <div class="panel-content">
+        <h2 class="panel-heading">Crafted</h2>
+        <p class="panel-text">Digital artistry & design</p>
+      </div>
+    </section>
 
-    <section class="contact">
-      <div class="contact-inner">
-        <h2>Want to work together?</h2>
-        <p>Let’s create something unique.</p>
-        <a class="email" href="mailto:your@email.com">your@email.com</a>
+    <!-- Before/After Section -->
+    <section class="before-after-section">
+      <div class="section-container">
+        <h2 class="section-heading">Photoshop Artistry</h2>
+        <p class="section-subheading">
+          Hover or drag to reveal transformations
+        </p>
+
+        <div class="before-after-grid">
+          <div class="before-after-container" data-ba="1">
+            <div class="ba-wrapper">
+              <img
+                src="https://picsum.photos/seed/before1/900/600"
+                alt="Before"
+                class="ba-image ba-before"
+              />
+              <img
+                src="https://picsum.photos/seed/after1/900/600"
+                alt="After"
+                class="ba-image ba-after"
+              />
+              <div class="ba-slider">
+                <div class="ba-handle">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="ba-labels">
+              <span class="ba-label ba-label-before">Before</span>
+              <span class="ba-label ba-label-after">After</span>
+            </div>
+          </div>
+
+          <div class="before-after-container" data-ba="2">
+            <div class="ba-wrapper">
+              <img
+                src="https://picsum.photos/seed/before2/900/600"
+                alt="Before"
+                class="ba-image ba-before"
+              />
+              <img
+                src="https://picsum.photos/seed/after2/900/600"
+                alt="After"
+                class="ba-image ba-after"
+              />
+              <div class="ba-slider">
+                <div class="ba-handle">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="ba-labels">
+              <span class="ba-label ba-label-before">Before</span>
+              <span class="ba-label ba-label-after">After</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero-panel" id="panel-4">
+      <div
+        class="panel-bg"
+        style="
+          background-image: url('https://picsum.photos/seed/hero4/1920/1080');
+        "
+      ></div>
+      <div class="panel-content">
+        <h2 class="panel-heading">Projects</h2>
+        <p class="panel-text">Complete creative series</p>
+      </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section id="contact" class="contact-panel">
+      <div class="contact-content">
+        <h2>Let's Create Together</h2>
+        <a class="cta-button" href="mailto:your@email.com">Get in Touch</a>
       </div>
     </section>
 
