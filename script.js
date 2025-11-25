@@ -296,10 +296,9 @@ function initParallaxHeadings() {
 
   function update() {
     const scrollY = window.scrollY;
+    const shift = Math.max(-18, Math.min(18, scrollY * 0.04)); // clamp movement
     headings.forEach((h) => {
-      const rect = h.getBoundingClientRect();
-      const offset = (rect.top + scrollY) * 0.0008; // subtle
-      h.style.transform = `translateY(${offset * 18}px)`; // small shift
+      h.style.transform = `translateY(${shift}px)`;
     });
   }
   window.addEventListener(
@@ -321,6 +320,8 @@ window.addEventListener("load", () => {
   initSectionReveal();
   initElementFades();
   initParallaxHeadings();
+  initCategoryTilesCycle();
+  initCategoryTileSelection();
   initContactForm();
 
   // Add scroll listener for parallax
@@ -340,31 +341,141 @@ window.addEventListener("load", () => {
    CONTACT FORM HANDLER
    --------------------------------------------------------- */
 function initContactForm() {
-  const form = document.getElementById("contact-form");
-  if (!form) return;
+  // Forms removed; no handler needed on GitHub Pages
+}
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const name = form.querySelector("#name").value.trim();
-    const email = form.querySelector("#email").value.trim();
-    const message = form.querySelector("#message").value.trim();
+/* ---------------------------------------------------------
+   CATEGORY SLIDESHOW
+   --------------------------------------------------------- */
+function initCategorySlideshow() {
+  const slideshow = document.querySelector(".category-slideshow");
+  if (!slideshow) return;
+  const slides = Array.from(slideshow.querySelectorAll(".cs-slide"));
+  const dots = Array.from(slideshow.querySelectorAll(".cs-dot"));
+  let idx = 0;
+  let timer = null;
 
-    if (!name || !email || !message) {
-      alert("Please fill in all fields before sending.");
-      return;
+  function setActive(n) {
+    idx = (n + slides.length) % slides.length;
+    slides.forEach((s, i) => s.classList.toggle("active", i === idx));
+    dots.forEach((d, i) => d.classList.toggle("active", i === idx));
+  }
+
+  function start() {
+    stop();
+    timer = setInterval(() => setActive(idx + 1), 5000);
+  }
+
+  function stop() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
     }
+  }
 
-    // Basic email format check
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-      alert("Enter a valid email address.");
-      return;
-    }
-
-    const mailto = `mailto:your@email.com?subject=${encodeURIComponent(
-      "Portfolio Inquiry from " + name
-    )}&body=${encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-    )}`;
-    window.location.href = mailto;
+  dots.forEach((dot, i) => {
+    dot.addEventListener("click", () => {
+      setActive(i);
+      start();
+    });
   });
+
+  // Pause on hover for desktop
+  slideshow.addEventListener("mouseenter", stop);
+  slideshow.addEventListener("mouseleave", start);
+
+  // Respect reduced motion
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  if (reduceMotion) {
+    // No auto-play; keep manual dots only
+    setActive(0);
+    return;
+  }
+
+  setActive(0);
+  start();
+}
+
+/* ---------------------------------------------------------
+   CATEGORY TILE SELECTION
+   --------------------------------------------------------- */
+function initCategoryTileSelection() {
+  const tiles = Array.from(
+    document.querySelectorAll(".category-tiles .category-tile")
+  );
+  if (!tiles.length) return;
+
+  // Default: first selected
+  let selected =
+    tiles.find((t) => t.classList.contains("selected")) || tiles[0];
+  if (selected) selected.classList.add("selected");
+
+  function setSelected(tile) {
+    tiles.forEach((t) => t.classList.remove("selected"));
+    tile.classList.add("selected");
+  }
+
+  // Hover selects; click navigates normally
+  tiles.forEach((tile) => {
+    tile.addEventListener("mouseenter", () => {
+      setSelected(tile);
+      const container = document.querySelector(".category-tiles");
+      if (container) {
+        container.dispatchEvent(new Event("mouseenter")); // pause cycle
+      }
+    });
+    tile.addEventListener("click", () => {
+      // Sync selection on click while allowing normal navigation
+      setSelected(tile);
+    });
+  });
+}
+
+/* ---------------------------------------------------------
+   CATEGORY TILES CYCLE (subtle highlight)
+   --------------------------------------------------------- */
+function initCategoryTilesCycle() {
+  const tiles = Array.from(
+    document.querySelectorAll(".category-tiles .category-tile")
+  );
+  if (!tiles.length) return;
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  if (reduceMotion) return;
+
+  let i = 0;
+  let timer = null;
+
+  function setSelectedByIndex(n) {
+    i = n % tiles.length;
+    tiles.forEach((t) => t.classList.remove("selected"));
+    tiles[i].classList.add("selected");
+  }
+
+  function start() {
+    stop();
+    timer = setInterval(() => {
+      setSelectedByIndex(i + 1);
+    }, 6000);
+  }
+
+  function stop() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  const container = document.querySelector(".category-tiles");
+  if (container) {
+    container.addEventListener("mouseenter", stop);
+    container.addEventListener("mouseleave", start);
+  }
+  // Initialize from any preselected tile
+  const preIdx = tiles.findIndex((t) => t.classList.contains("selected"));
+  setSelectedByIndex(preIdx >= 0 ? preIdx : 0);
+  start();
 }
