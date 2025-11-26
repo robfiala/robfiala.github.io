@@ -749,6 +749,36 @@ function initParallaxHeadings() {
   update();
 }
 
+/* ---------------------------------------------------------
+   SCROLL INDICATOR FADE OUT
+   --------------------------------------------------------- */
+function initScrollIndicator() {
+  const scrollIndicator = document.querySelector(".scroll-indicator");
+  if (!scrollIndicator) return;
+
+  let ticking = false;
+
+  function handleScroll() {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const scrollY = window.scrollY || window.pageYOffset;
+
+        // Fade out after scrolling 100px
+        if (scrollY > 100) {
+          scrollIndicator.classList.add("hidden");
+        } else {
+          scrollIndicator.classList.remove("hidden");
+        }
+
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  window.addEventListener("scroll", handleScroll, { passive: true });
+}
+
 // Initialize on load
 window.addEventListener("load", () => {
   initScrollPanels();
@@ -764,6 +794,7 @@ window.addEventListener("load", () => {
   initVideoShowcase();
   initBeforeAfterCarousel();
   initMasonryGallery();
+  initScrollIndicator();
 
   // Add scroll listener for parallax
   window.addEventListener("scroll", onScroll, { passive: true });
