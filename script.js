@@ -12,21 +12,12 @@ function initMasonryGallery() {
   const closeBtn = document.querySelector(".masonry-lightbox-close");
   const prevBtn = document.querySelector(".masonry-lightbox-prev");
   const nextBtn = document.querySelector(".masonry-lightbox-next");
-  const zoomInBtn = document.querySelector(".zoom-in");
-  const zoomOutBtn = document.querySelector(".zoom-out");
-  const zoomResetBtn = document.querySelector(".zoom-reset");
   const imageContainer = document.querySelector(
     ".masonry-lightbox-image-container"
   );
 
   let images = [];
   let currentIndex = 0;
-  let currentZoom = 1;
-  let isDragging = false;
-  let startX = 0;
-  let startY = 0;
-  let translateX = 0;
-  let translateY = 0;
   let touchStartX = 0;
   let touchEndX = 0;
 
@@ -113,7 +104,6 @@ function initMasonryGallery() {
   function closeLightbox() {
     lightbox.classList.remove("active");
     document.body.style.overflow = "";
-    resetZoom();
   }
 
   // Update lightbox content
@@ -121,7 +111,6 @@ function initMasonryGallery() {
     lightboxImage.src = images[currentIndex].src;
     lightboxImage.alt = images[currentIndex].alt;
     lightboxCounter.textContent = `${currentIndex + 1} / ${images.length}`;
-    resetZoom();
   }
 
   // Navigation
@@ -134,53 +123,6 @@ function initMasonryGallery() {
     currentIndex = (currentIndex - 1 + images.length) % images.length;
     updateLightbox();
   }
-
-  // Zoom functions
-  function zoomIn() {
-    currentZoom = Math.min(currentZoom + 0.25, 3);
-    applyZoom();
-  }
-
-  function zoomOut() {
-    currentZoom = Math.max(currentZoom - 0.25, 0.5);
-    applyZoom();
-  }
-
-  function resetZoom() {
-    currentZoom = 1;
-    translateX = 0;
-    translateY = 0;
-    applyZoom();
-  }
-
-  function applyZoom() {
-    lightboxImage.style.transform = `scale(${currentZoom}) translate(${translateX}px, ${translateY}px)`;
-  }
-
-  // Mouse drag for panning when zoomed
-  imageContainer.addEventListener("mousedown", (e) => {
-    if (currentZoom > 1) {
-      isDragging = true;
-      startX = e.clientX - translateX;
-      startY = e.clientY - translateY;
-      imageContainer.classList.add("dragging");
-    }
-  });
-
-  document.addEventListener("mousemove", (e) => {
-    if (isDragging) {
-      translateX = e.clientX - startX;
-      translateY = e.clientY - startY;
-      applyZoom();
-    }
-  });
-
-  document.addEventListener("mouseup", () => {
-    if (isDragging) {
-      isDragging = false;
-      imageContainer.classList.remove("dragging");
-    }
-  });
 
   // Touch swipe for navigation
   lightbox.addEventListener(
@@ -225,17 +167,6 @@ function initMasonryGallery() {
       case "ArrowRight":
         nextImage();
         break;
-      case "+":
-      case "=":
-        zoomIn();
-        break;
-      case "-":
-      case "_":
-        zoomOut();
-        break;
-      case "0":
-        resetZoom();
-        break;
     }
   });
 
@@ -243,9 +174,6 @@ function initMasonryGallery() {
   if (closeBtn) closeBtn.addEventListener("click", closeLightbox);
   if (prevBtn) prevBtn.addEventListener("click", prevImage);
   if (nextBtn) nextBtn.addEventListener("click", nextImage);
-  if (zoomInBtn) zoomInBtn.addEventListener("click", zoomIn);
-  if (zoomOutBtn) zoomOutBtn.addEventListener("click", zoomOut);
-  if (zoomResetBtn) zoomResetBtn.addEventListener("click", resetZoom);
 
   // Close on background click
   lightbox.addEventListener("click", (e) => {
@@ -546,6 +474,82 @@ function initVideoShowcase() {
     }
   });
 }
+
+/* ---------------------------------------------------------
+   COMING SOON TITLE MOUSE FOLLOW
+   --------------------------------------------------------- */
+function initComingSoonFollow() {
+  const container = document.querySelector(".coming-soon-container");
+  const title = document.querySelector(".coming-soon-title");
+  if (!container || !title) return;
+
+  // Add class to disable glitch translation jitter
+  title.classList.add("mouse-follow");
+  // Target offsets for each pseudo element
+  let targetBeforeX = 0,
+    targetBeforeY = 0;
+  let targetAfterX = 0,
+    targetAfterY = 0;
+  let currentBeforeX = 0,
+    currentBeforeY = 0;
+  let currentAfterX = 0,
+    currentAfterY = 0;
+  const ease = 0.15;
+  const rangeX = 60; // subtle horizontal dispersion
+  const rangeY = 25; // subtle vertical dispersion
+
+  function onMove(e) {
+    const rect = container.getBoundingClientRect();
+    // Handle both mouse and touch events
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+    if (clientX === undefined || clientY === undefined) return;
+
+    const relX = (clientX - rect.left) / rect.width; // 0..1
+    const relY = (clientY - rect.top) / rect.height; // 0..1
+    // Map to -0.5..0.5
+    const nx = relX - 0.5;
+    const ny = relY - 0.5;
+    // Pink layer (before) moves one direction
+    targetBeforeX = nx * rangeX;
+    targetBeforeY = ny * rangeY;
+    // Cyan layer (after) moves opposite for chromatic separation
+    targetAfterX = -nx * rangeX;
+    targetAfterY = -ny * rangeY;
+  }
+
+  function animate() {
+    // ease both layers toward targets
+    currentBeforeX += (targetBeforeX - currentBeforeX) * ease;
+    currentBeforeY += (targetBeforeY - currentBeforeY) * ease;
+    currentAfterX += (targetAfterX - currentAfterX) * ease;
+    currentAfterY += (targetAfterY - currentAfterY) * ease;
+    title.style.setProperty(
+      "--glitch-before-x",
+      currentBeforeX.toFixed(2) + "px"
+    );
+    title.style.setProperty(
+      "--glitch-before-y",
+      currentBeforeY.toFixed(2) + "px"
+    );
+    title.style.setProperty(
+      "--glitch-after-x",
+      currentAfterX.toFixed(2) + "px"
+    );
+    title.style.setProperty(
+      "--glitch-after-y",
+      currentAfterY.toFixed(2) + "px"
+    );
+    requestAnimationFrame(animate);
+  }
+
+  container.addEventListener("mousemove", onMove);
+  container.addEventListener("touchmove", onMove, { passive: true });
+  animate();
+}
+
+// Initialize mouse follow after other showcase init
+initComingSoonFollow();
 /* ---------------------------------------------------------
    Inspired by landonorris.com with fade-in panels
    --------------------------------------------------------- */
@@ -634,7 +638,6 @@ function initGalleryInteractions() {
     // Optional: Add click handler for lightbox or detail view
     item.addEventListener("click", () => {
       // Could open a modal/lightbox here
-      console.log("Gallery item clicked:", item);
     });
   });
 }
@@ -793,18 +796,30 @@ function initLensRingCarousels() {
   function updateRotation() {
     const scrollY = window.scrollY || window.pageYOffset;
 
+    // Get section positions
+    const photographySection = document.getElementById("photography");
+    const videographySection = document.getElementById("videography");
+
     // Don't rotate the ring itself - move each value individually
-    if (shutterRing) {
-      const shutterRotation = scrollY * 0.15; // degrees
-      // Snap to nearest 30-degree increment (each value position)
-      const snappedShutterRotation = Math.round(shutterRotation / 30) * 30;
+    if (shutterRing && photographySection) {
+      const sectionTop = photographySection.offsetTop;
+      const scrollFromSection = scrollY - sectionTop;
+      const shutterRotation = scrollFromSection * 0.15; // degrees
+      // Offset so 1/125 (index 6) is at front when at photography section
+      // 6 * 30 = 180 degrees offset
+      const offsetRotation = shutterRotation + 180;
+      const snappedShutterRotation = Math.round(offsetRotation / 30) * 30;
       updateValuePositions(shutterRing, snappedShutterRotation);
     }
 
-    if (focalRing) {
-      const focalRotation = scrollY * 0.2; // slightly faster
-      // Snap to nearest 30-degree increment (each value position)
-      const snappedFocalRotation = Math.round(focalRotation / 30) * 30;
+    if (focalRing && videographySection) {
+      const sectionTop = videographySection.offsetTop;
+      const scrollFromSection = scrollY - sectionTop;
+      const focalRotation = scrollFromSection * 0.2; // slightly faster
+      // Offset so 50mm (index 3) is at front when at videography section
+      // 3 * 30 = 90 degrees offset
+      const offsetRotation = focalRotation + 90;
+      const snappedFocalRotation = Math.round(offsetRotation / 30) * 30;
       updateValuePositions(focalRing, snappedFocalRotation);
     }
 
@@ -881,13 +896,6 @@ function initInteractiveBlur() {
   const capturedSharp = document.getElementById("capturedSharp");
   const craftedSharp = document.getElementById("craftedSharp");
 
-  console.log("Interactive blur init:", {
-    capturedPanel,
-    craftedPanel,
-    capturedSharp,
-    craftedSharp,
-  });
-
   const pairs = [
     { panel: capturedPanel, sharp: capturedSharp },
     { panel: craftedPanel, sharp: craftedSharp },
@@ -908,13 +916,11 @@ function initInteractiveBlur() {
       const radius = 300; // pixels
       sharp.style.webkitMaskImage = `radial-gradient(circle ${radius}px at ${x}px ${y}px, black 60%, transparent 100%)`;
       sharp.style.maskImage = `radial-gradient(circle ${radius}px at ${x}px ${y}px, black 60%, transparent 100%)`;
-      console.log("Mask updated at:", x, y);
     });
 
     panel.addEventListener("mouseleave", () => {
       sharp.style.webkitMaskImage = `radial-gradient(circle 0px at 50% 50%, black 60%, transparent 100%)`;
       sharp.style.maskImage = `radial-gradient(circle 0px at 50% 50%, black 60%, transparent 100%)`;
-      console.log("Mouse left, resetting mask");
     });
   });
 }

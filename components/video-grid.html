@@ -1,0 +1,96 @@
+<!-- Video Filters -->
+<div class="video-filters anim-fade">
+  <button class="filter-btn active" data-filter="all">All Videos</button>
+  <button class="filter-btn" data-filter="car">Car Videos</button>
+  <button class="filter-btn" data-filter="commercial">Commercial</button>
+  <button class="filter-btn" data-filter="cinematic">Cinematic</button>
+  <button class="filter-btn" data-filter="urban">Urban Motion</button>
+</div>
+
+<!-- Video Grid -->
+<div class="video-grid">
+  <!-- Example Video Item (duplicate and adjust as needed) -->
+  <div class="video-item anim-fade" data-category="car">
+    <div class="video-thumbnail">
+      <img
+        src="https://picsum.photos/seed/carvideo1/800/450"
+        alt="Car video 1 thumbnail"
+        loading="lazy"
+      />
+      <div class="video-overlay">
+        <div class="play-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="video-info">
+      <h3 class="video-title">Luxury Car Showcase</h3>
+      <p class="video-category">Car Videos</p>
+    </div>
+    <button
+      class="video-play-btn"
+      data-video-type="youtube"
+      data-video-id="dQw4w9WgXcQ"
+      aria-label="Play video: Luxury Car Showcase"
+    ></button>
+  </div>
+
+  <div class="video-item anim-fade" data-category="commercial">
+    <div class="video-thumbnail">
+      <img
+        src="https://picsum.photos/seed/commercial1/800/450"
+        alt="Commercial video 1 thumbnail"
+        loading="lazy"
+      />
+      <div class="video-overlay">
+        <div class="play-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="video-info">
+      <h3 class="video-title">Brand Product Launch</h3>
+      <p class="video-category">Commercial</p>
+    </div>
+    <button
+      class="video-play-btn"
+      data-video-type="youtube"
+      data-video-id="dQw4w9WgXcQ"
+      aria-label="Play video: Brand Product Launch"
+    ></button>
+  </div>
+
+  <!-- Add more items as needed -->
+</div>
+
+<!-- Video Modal (reusable) -->
+<div
+  class="video-modal"
+  id="videoModal"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Video player"
+>
+  <button class="modal-close" aria-label="Close video">
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+  <div class="modal-content">
+    <div class="video-container" id="videoContainer">
+      <!-- Video iframe will be inserted here -->
+    </div>
+  </div>
+</div>
