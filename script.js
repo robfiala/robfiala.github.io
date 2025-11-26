@@ -1038,12 +1038,12 @@ function initDeviceTiltEffects() {
       }
     });
 
-    // Subtle tilt on category title text for depth
+    // Subtle tilt on category title text for depth (independent from tile)
     categoryTitles.forEach((title) => {
       if (isElementInViewport(title)) {
-        const rotateX = Math.max(-3, Math.min(3, -tiltY * 0.05));
-        const rotateY = Math.max(-3, Math.min(3, tiltX * 0.05));
-        title.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        const rotateX = Math.max(-8, Math.min(8, -tiltY * 0.12));
+        const rotateY = Math.max(-8, Math.min(8, tiltX * 0.12));
+        title.style.transform = `perspective(500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
       }
     });
 
