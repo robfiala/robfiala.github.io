@@ -998,9 +998,8 @@ function initDeviceTiltEffects() {
   if (!window.DeviceOrientationEvent) return;
 
   const contactPanel = document.querySelector(".contact-panel");
-  const panelHeadings = document.querySelectorAll(".panel-heading");
-  const panelTexts = document.querySelectorAll(".panel-text");
   const categoryTiles = document.querySelectorAll(".category-tile");
+  const categoryTitles = document.querySelectorAll(".category-title");
   const socialLinks = document.querySelectorAll(".social-links a");
   const ctaButtons = document.querySelectorAll(".cta-button");
 
@@ -1030,30 +1029,21 @@ function initDeviceTiltEffects() {
       contactPanel.style.transform = `translate(${parallaxX}px, ${parallaxY}px)`;
     }
 
-    // Subtle parallax on panel headings (opposite direction for depth)
-    panelHeadings.forEach((heading) => {
-      if (isElementInViewport(heading)) {
-        const offsetX = Math.max(-10, Math.min(10, -tiltX * 0.2));
-        const offsetY = Math.max(-10, Math.min(10, -tiltY * 0.2));
-        heading.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-      }
-    });
-
-    // Very subtle parallax on panel text (same direction, less movement)
-    panelTexts.forEach((text) => {
-      if (isElementInViewport(text)) {
-        const offsetX = Math.max(-5, Math.min(5, tiltX * 0.1));
-        const offsetY = Math.max(-5, Math.min(5, tiltY * 0.1));
-        text.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-      }
-    });
-
     // 3D tilt on category tiles (photography, videography sections without image backgrounds)
     categoryTiles.forEach((tile) => {
       if (isElementInViewport(tile)) {
         const rotateX = Math.max(-5, Math.min(5, -tiltY * 0.08));
         const rotateY = Math.max(-5, Math.min(5, tiltX * 0.08));
         tile.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      }
+    });
+
+    // Subtle tilt on category title text for depth
+    categoryTitles.forEach((title) => {
+      if (isElementInViewport(title)) {
+        const rotateX = Math.max(-3, Math.min(3, -tiltY * 0.05));
+        const rotateY = Math.max(-3, Math.min(3, tiltX * 0.05));
+        title.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       }
     });
 

@@ -505,7 +505,6 @@ body {
   line-height: 1;
   margin: 0 0 16px;
   color: var(--text-primary);
-  transition: transform 0.3s ease-out;
 }
 
 .panel-text {
@@ -515,7 +514,6 @@ body {
   margin: 0;
   letter-spacing: 0.5px;
   color: var(--text-secondary);
-  transition: transform 0.3s ease-out;
 }
 
 /* Scroll Indicator with Brand Accent */
@@ -1061,6 +1059,7 @@ body {
   letter-spacing: -0.5px;
   font-size: clamp(16px, 2vw, 22px);
   color: var(--text-primary);
+  transition: transform 0.3s ease-out;
 }
 
 .category-tile:hover {
