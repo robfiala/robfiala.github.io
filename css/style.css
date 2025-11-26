@@ -266,6 +266,26 @@ body {
   }
 }
 
+/* Stronger frosted glass for smaller mobile (<= 768px) */
+@media (max-width: 768px) {
+  .nav-links {
+    background: rgba(10, 10, 10, 0.15);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Ensure menu text remains fully readable on frosted panel */
+  .nav-links .nav-cta {
+    color: var(--text-primary);
+    font-weight: 600;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+}
+
 /* ================= FULL-SCREEN HERO PANELS ================= */
 .hero-panel {
   position: relative;
@@ -438,6 +458,44 @@ body {
   background: var(--bg-primary);
   padding: 80px 5%;
   position: relative;
+}
+
+/* Center social icons within their container */
+.social-links {
+  display: flex;
+  justify-content: center; /* center horizontally */
+  align-items: center; /* vertically align */
+  gap: 16px; /* even spacing between icons */
+  flex-wrap: wrap; /* responsive wrapping on small screens */
+  padding: 8px 0; /* subtle spacing */
+}
+
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  transition: transform 0.2s var(--transition-smooth),
+    background 0.2s var(--transition-smooth),
+    border-color 0.2s var(--transition-smooth);
+}
+
+.social-links a:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+@media (min-width: 768px) {
+  .social-links {
+    gap: 20px;
+  }
 }
 
 .contact-content {
