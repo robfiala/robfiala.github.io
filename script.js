@@ -568,31 +568,42 @@ function initComingSoonFollow() {
   container.addEventListener("touchmove", onMove, { passive: true });
 
   // Request device orientation permission and enable tilt on mobile
+  function requestOrientationPermission() {
+    if (
+      typeof DeviceOrientationEvent !== "undefined" &&
+      typeof DeviceOrientationEvent.requestPermission === "function"
+    ) {
+      // iOS 13+ requires permission - must be called from user gesture
+      DeviceOrientationEvent.requestPermission()
+        .then((permissionState) => {
+          if (permissionState === "granted") {
+            useDeviceOrientation = true;
+            window.addEventListener("deviceorientation", onDeviceOrientation, {
+              passive: true,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log("Device orientation permission denied:", err);
+        });
+    }
+  }
+
+  // Try to enable orientation on first touch/click
   if (
     typeof DeviceOrientationEvent !== "undefined" &&
     typeof DeviceOrientationEvent.requestPermission === "function"
   ) {
-    // iOS 13+ requires permission
-    container.addEventListener(
-      "click",
-      () => {
-        DeviceOrientationEvent.requestPermission()
-          .then((permissionState) => {
-            if (permissionState === "granted") {
-              useDeviceOrientation = true;
-              window.addEventListener(
-                "deviceorientation",
-                onDeviceOrientation,
-                { passive: true }
-              );
-            }
-          })
-          .catch(console.error);
-      },
-      { once: true }
-    );
+    // iOS 13+ - wait for user interaction
+    container.addEventListener("touchstart", requestOrientationPermission, {
+      once: true,
+      passive: true,
+    });
+    container.addEventListener("click", requestOrientationPermission, {
+      once: true,
+    });
   } else if (window.DeviceOrientationEvent) {
-    // Android and other devices
+    // Android and other devices - enable immediately
     useDeviceOrientation = true;
     window.addEventListener("deviceorientation", onDeviceOrientation, {
       passive: true,
@@ -1034,29 +1045,36 @@ function initDeviceTiltEffects() {
   }
 
   // Request permission for iOS 13+
+  function requestOrientationPermission() {
+    if (
+      !permissionGranted &&
+      typeof DeviceOrientationEvent.requestPermission === "function"
+    ) {
+      DeviceOrientationEvent.requestPermission()
+        .then((permissionState) => {
+          if (permissionState === "granted") {
+            permissionGranted = true;
+            window.addEventListener("deviceorientation", handleOrientation, {
+              passive: true,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log("Tilt permission denied:", err);
+        });
+    }
+  }
+
   if (typeof DeviceOrientationEvent.requestPermission === "function") {
-    // Add tap listener to request permission
-    document.body.addEventListener(
-      "click",
-      () => {
-        if (!permissionGranted) {
-          DeviceOrientationEvent.requestPermission()
-            .then((permissionState) => {
-              if (permissionState === "granted") {
-                permissionGranted = true;
-                window.addEventListener(
-                  "deviceorientation",
-                  handleOrientation,
-                  { passive: true }
-                );
-              }
-            })
-            .catch(console.error);
-        }
-      },
-      { once: true }
-    );
-  } else {
+    // iOS 13+ - wait for user interaction
+    document.body.addEventListener("touchstart", requestOrientationPermission, {
+      once: true,
+      passive: true,
+    });
+    document.body.addEventListener("click", requestOrientationPermission, {
+      once: true,
+    });
+  } else if (window.DeviceOrientationEvent) {
     // Android and other devices - auto enable
     permissionGranted = true;
     window.addEventListener("deviceorientation", handleOrientation, {
