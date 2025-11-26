@@ -1061,7 +1061,6 @@ body {
   letter-spacing: -0.5px;
   font-size: clamp(16px, 2vw, 22px);
   color: var(--text-primary);
-  transition: transform 0.3s ease-out;
 }
 
 .category-tile:hover {

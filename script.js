@@ -1000,7 +1000,7 @@ function initDeviceTiltEffects() {
   const contactPanel = document.querySelector(".contact-panel");
   const panelHeadings = document.querySelectorAll(".panel-heading");
   const panelTexts = document.querySelectorAll(".panel-text");
-  const categoryTitles = document.querySelectorAll(".category-title");
+  const categoryTiles = document.querySelectorAll(".category-tile");
   const socialLinks = document.querySelectorAll(".social-links a");
   const ctaButtons = document.querySelectorAll(".cta-button");
 
@@ -1048,12 +1048,12 @@ function initDeviceTiltEffects() {
       }
     });
 
-    // Subtle tilt on category titles for depth
-    categoryTitles.forEach((title) => {
-      if (isElementInViewport(title)) {
-        const rotateX = Math.max(-3, Math.min(3, -tiltY * 0.05));
-        const rotateY = Math.max(-3, Math.min(3, tiltX * 0.05));
-        title.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    // 3D tilt on category tiles (photography, videography sections without image backgrounds)
+    categoryTiles.forEach((tile) => {
+      if (isElementInViewport(tile)) {
+        const rotateX = Math.max(-5, Math.min(5, -tiltY * 0.08));
+        const rotateY = Math.max(-5, Math.min(5, tiltX * 0.08));
+        tile.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       }
     });
 
