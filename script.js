@@ -1009,25 +1009,25 @@ function initDeviceTiltEffects() {
     const beta = e.beta || 0; // front-back tilt (-180 to 180)
     const gamma = e.gamma || 0; // left-right tilt (-90 to 90)
 
-    // Normalize values
-    const tiltX = Math.max(-15, Math.min(15, gamma / 6)); // -15 to 15 degrees
-    const tiltY = Math.max(-15, Math.min(15, (beta - 90) / 6)); // -15 to 15 degrees
+    // Normalize values - more subtle for mobile
+    const tiltX = Math.max(-8, Math.min(8, gamma / 11)); // -8 to 8 degrees
+    const tiltY = Math.max(-8, Math.min(8, (beta - 90) / 11)); // -8 to 8 degrees
 
     // Apply subtle 3D transform to hero panels
     heroPanels.forEach((panel) => {
       if (isElementInViewport(panel)) {
-        panel.style.transform = `perspective(1000px) rotateX(${-tiltY}deg) rotateY(${tiltX}deg)`;
+        panel.style.transform = `perspective(1000px) rotateX(${-tiltY}deg) rotateY(${tiltX}deg) scale(1)`;
       }
     });
 
     // Apply tilt to category tiles for depth effect
-    categoryTiles.forEach((tile, index) => {
+    categoryTiles.forEach((tile) => {
       if (isElementInViewport(tile)) {
-        const offsetX = tiltX * (1 + index * 0.1);
-        const offsetY = tiltY * (1 + index * 0.1);
+        const isHovered = tile.matches(":hover");
+        const baseScale = isHovered ? 1.03 : 1;
         tile.style.transform = `perspective(1000px) rotateX(${
-          -offsetY * 0.5
-        }deg) rotateY(${offsetX * 0.5}deg)`;
+          -tiltY * 0.3
+        }deg) rotateY(${tiltX * 0.3}deg) scale(${baseScale})`;
       }
     });
 
