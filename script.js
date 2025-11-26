@@ -796,12 +796,16 @@ function initLensRingCarousels() {
     // Don't rotate the ring itself - move each value individually
     if (shutterRing) {
       const shutterRotation = scrollY * 0.15; // degrees
-      updateValuePositions(shutterRing, shutterRotation);
+      // Snap to nearest 30-degree increment (each value position)
+      const snappedShutterRotation = Math.round(shutterRotation / 30) * 30;
+      updateValuePositions(shutterRing, snappedShutterRotation);
     }
 
     if (focalRing) {
       const focalRotation = scrollY * 0.2; // slightly faster
-      updateValuePositions(focalRing, focalRotation);
+      // Snap to nearest 30-degree increment (each value position)
+      const snappedFocalRotation = Math.round(focalRotation / 30) * 30;
+      updateValuePositions(focalRing, snappedFocalRotation);
     }
 
     ticking = false;
@@ -833,6 +837,23 @@ function initLensRingCarousels() {
         }
       }
 
+      // Check if this is the front-most value (highest Z value)
+      const isFront = z > 45; // Front position threshold
+
+      // Style based on position
+      if (isFront) {
+        value.style.color = "#8b5cf6";
+        value.style.fontSize = "0.95rem";
+        value.style.fontWeight = "700";
+        value.style.textShadow =
+          "0 0 12px rgba(139, 92, 246, 0.25), 0 2px 10px rgba(0, 0, 0, 0.9)";
+      } else {
+        value.style.color = "#ffffff";
+        value.style.fontSize = "0.8rem";
+        value.style.fontWeight = "600";
+        value.style.textShadow = "0 2px 10px rgba(0, 0, 0, 0.9)";
+      }
+
       // Position the value at calculated X/Z but always facing forward
       // Use translate3d for X and Z positioning, keeping text always horizontal and facing camera
       value.style.transform = `translate(-50%, -50%) translate3d(${x}px, 0, ${z}px) rotate(-90deg)`;
@@ -849,6 +870,53 @@ function initLensRingCarousels() {
 
   window.addEventListener("scroll", handleScroll, { passive: true });
   updateRotation(); // Initial state
+}
+
+/* --------------------------------------------------------- 
+   Interactive Blur Focus Effect
+   --------------------------------------------------------- */
+function initInteractiveBlur() {
+  const capturedPanel = document.getElementById("panel-2");
+  const craftedPanel = document.getElementById("panel-3");
+  const capturedSharp = document.getElementById("capturedSharp");
+  const craftedSharp = document.getElementById("craftedSharp");
+
+  console.log("Interactive blur init:", {
+    capturedPanel,
+    craftedPanel,
+    capturedSharp,
+    craftedSharp,
+  });
+
+  const pairs = [
+    { panel: capturedPanel, sharp: capturedSharp },
+    { panel: craftedPanel, sharp: craftedSharp },
+  ];
+
+  pairs.forEach(({ panel, sharp }) => {
+    if (!panel || !sharp) {
+      console.warn("Missing element:", { panel, sharp });
+      return;
+    }
+
+    panel.addEventListener("mousemove", (e) => {
+      const rect = panel.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      // Update mask position to create a circular reveal with soft edges
+      const radius = 300; // pixels
+      sharp.style.webkitMaskImage = `radial-gradient(circle ${radius}px at ${x}px ${y}px, black 60%, transparent 100%)`;
+      sharp.style.maskImage = `radial-gradient(circle ${radius}px at ${x}px ${y}px, black 60%, transparent 100%)`;
+      console.log("Mask updated at:", x, y);
+    });
+
+    panel.addEventListener("mouseleave", () => {
+      sharp.style.webkitMaskImage = `radial-gradient(circle 0px at 50% 50%, black 60%, transparent 100%)`;
+      sharp.style.maskImage = `radial-gradient(circle 0px at 50% 50%, black 60%, transparent 100%)`;
+      console.log("Mouse left, resetting mask");
+    });
+  });
 }
 
 // Initialize on load
@@ -868,6 +936,7 @@ window.addEventListener("load", () => {
   initMasonryGallery();
   initScrollIndicator();
   initLensRingCarousels();
+  initInteractiveBlur();
 
   // Add scroll listener for parallax
   window.addEventListener("scroll", onScroll, { passive: true });
