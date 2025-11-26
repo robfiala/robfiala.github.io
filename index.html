@@ -21,7 +21,14 @@
         <span class="logo-signature">Rob Fiala</span>
         <span class="logo-tagline">Visual Stories</span>
       </a>
-      <div style="display: flex; gap: 24px; align-items: center">
+      <button
+        class="nav-toggle"
+        aria-label="Toggle navigation"
+        aria-expanded="false"
+      >
+        <span class="hamburger"></span>
+      </button>
+      <div class="nav-links">
         <a class="nav-cta" href="pictures/index.html">Pictures</a>
         <a class="nav-cta" href="photoshop/index.html">Photoshop</a>
         <a class="nav-cta" href="about/index.html">About</a>
@@ -79,7 +86,7 @@
         >
           <a
             class="category-tile"
-            href="pictures/index.html?category=car"
+            href="/pictures/carphotography/index.html"
             aria-label="Car Photography"
           >
             <img
@@ -92,7 +99,7 @@
           </a>
           <a
             class="category-tile"
-            href="pictures/index.html?category=architecture"
+            href="/pictures/architecture/index.html"
             aria-label="Architecture"
           >
             <img
@@ -105,7 +112,7 @@
           </a>
           <a
             class="category-tile"
-            href="pictures/index.html?category=landscapes"
+            href="/pictures/landscapes/index.html"
             aria-label="Landscapes"
           >
             <img
@@ -118,7 +125,7 @@
           </a>
           <a
             class="category-tile"
-            href="pictures/index.html?category=studio"
+            href="/pictures/studiowork/index.html"
             aria-label="Studio Work"
           >
             <img
@@ -127,6 +134,29 @@
             />
             <div class="category-title-overlay">
               <span class="category-title">Studio Work</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Videography Section -->
+    <section class="gallery-section" id="videography">
+      <div class="brand-divider"></div>
+      <div class="section-container">
+        <h2 class="section-heading parallax-heading anim-fade">Videography</h2>
+        <div class="single-tile-container anim-fade">
+          <a
+            class="category-tile single-tile"
+            href="/videos/index.html"
+            aria-label="Videography"
+          >
+            <img
+              src="https://picsum.photos/seed/videography/1200/800"
+              alt="Videography section thumbnail"
+            />
+            <div class="category-title-overlay">
+              <span class="category-title">Explore Videography</span>
             </div>
           </a>
         </div>
@@ -146,84 +176,31 @@
       </div>
     </section>
 
-    <!-- Before/After Section -->
-    <section class="before-after-section">
+    <!-- Photoshop Carousel Section -->
+    <section class="photoshop-section">
       <div class="section-container">
         <h2 class="section-heading parallax-heading anim-fade">
           Photoshop Artistry
         </h2>
         <p class="section-subheading">
-          Hover or drag to reveal transformations
+          Visual transformations and digital artistry
         </p>
 
-        <div class="before-after-grid">
-          <div class="before-after-container anim-fade" data-ba="1">
-            <div class="ba-wrapper">
-              <img
-                src="https://picsum.photos/seed/before1/900/600"
-                alt="Before"
-                class="ba-image ba-before"
-              />
-              <img
-                src="https://picsum.photos/seed/after1/900/600"
-                alt="After"
-                class="ba-image ba-after"
-              />
-              <div class="ba-slider">
-                <div class="ba-handle">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </div>
-              </div>
+        <div class="single-tile-container anim-fade">
+          <a
+            class="category-tile single-tile"
+            href="/photoshop/index.html"
+            aria-label="Photoshop Artistry"
+          >
+            <img
+              src="https://picsum.photos/seed/photoshop/1200/800"
+              alt="Photoshop artistry section thumbnail"
+              loading="lazy"
+            />
+            <div class="category-title-overlay">
+              <span class="category-title">Explore Photoshop Work</span>
             </div>
-            <div class="ba-labels">
-              <span class="ba-label ba-label-before">Before</span>
-              <span class="ba-label ba-label-after">After</span>
-            </div>
-          </div>
-
-          <div class="before-after-container anim-fade" data-ba="2">
-            <div class="ba-wrapper">
-              <img
-                src="https://picsum.photos/seed/before2/900/600"
-                alt="Before"
-                class="ba-image ba-before"
-              />
-              <img
-                src="https://picsum.photos/seed/after2/900/600"
-                alt="After"
-                class="ba-image ba-after"
-              />
-              <div class="ba-slider">
-                <div class="ba-handle">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="ba-labels">
-              <span class="ba-label ba-label-before">Before</span>
-              <span class="ba-label ba-label-after">After</span>
-            </div>
-          </div>
+          </a>
         </div>
       </div>
     </section>

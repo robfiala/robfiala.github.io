@@ -1,467 +1,4 @@
 /* ---------------------------------------------------------
-   MASONRY GALLERY & LIGHTBOX
-   --------------------------------------------------------- */
-function initMasonryGallery() {
-  const section = document.querySelector(".masonry-gallery-section");
-  if (!section) return;
-
-  const grid = document.getElementById("masonryGrid");
-  const lightbox = document.getElementById("masonryLightbox");
-  const lightboxImage = document.getElementById("lightboxImage");
-  const lightboxCounter = document.getElementById("lightboxCounter");
-  const closeBtn = document.querySelector(".masonry-lightbox-close");
-  const prevBtn = document.querySelector(".masonry-lightbox-prev");
-  const nextBtn = document.querySelector(".masonry-lightbox-next");
-  const zoomInBtn = document.querySelector(".zoom-in");
-  const zoomOutBtn = document.querySelector(".zoom-out");
-  const zoomResetBtn = document.querySelector(".zoom-reset");
-  const imageContainer = document.querySelector(
-    ".masonry-lightbox-image-container"
-  );
-
-  let images = [];
-  let currentIndex = 0;
-  let currentZoom = 1;
-  let isDragging = false;
-  let startX = 0;
-  let startY = 0;
-  let translateX = 0;
-  let translateY = 0;
-  let touchStartX = 0;
-  let touchEndX = 0;
-
-  const category = section.getAttribute("data-category");
-
-  // Placeholder images for demonstration
-  // In production, these would be loaded from:
-  // - /pictures/<category>/assets/ for photography pages
-  // - /photoshop/assets/ for photoshop page
-  const placeholderImages = [
-    {
-      src: `https://picsum.photos/400/600?random=1&category=${category}`,
-      alt: `${category} 1`,
-    },
-    {
-      src: `https://picsum.photos/400/300?random=2&category=${category}`,
-      alt: `${category} 2`,
-    },
-    {
-      src: `https://picsum.photos/400/500?random=3&category=${category}`,
-      alt: `${category} 3`,
-    },
-    {
-      src: `https://picsum.photos/400/450?random=4&category=${category}`,
-      alt: `${category} 4`,
-    },
-    {
-      src: `https://picsum.photos/400/550?random=5&category=${category}`,
-      alt: `${category} 5`,
-    },
-    {
-      src: `https://picsum.photos/400/400?random=6&category=${category}`,
-      alt: `${category} 6`,
-    },
-    {
-      src: `https://picsum.photos/400/600?random=7&category=${category}`,
-      alt: `${category} 7`,
-    },
-    {
-      src: `https://picsum.photos/400/350?random=8&category=${category}`,
-      alt: `${category} 8`,
-    },
-    {
-      src: `https://picsum.photos/400/500?random=9&category=${category}`,
-      alt: `${category} 9`,
-    },
-    {
-      src: `https://picsum.photos/400/450?random=10&category=${category}`,
-      alt: `${category} 10`,
-    },
-    {
-      src: `https://picsum.photos/400/550?random=11&category=${category}`,
-      alt: `${category} 11`,
-    },
-    {
-      src: `https://picsum.photos/400/400?random=12&category=${category}`,
-      alt: `${category} 12`,
-    },
-  ];
-
-  images = placeholderImages;
-
-  // Load images into masonry grid
-  function loadGallery() {
-    grid.innerHTML = "";
-    images.forEach((img, index) => {
-      const item = document.createElement("div");
-      item.className = "masonry-item";
-      item.innerHTML = `<img src="${img.src}" alt="${img.alt}" class="masonry-image" loading="lazy">`;
-      item.addEventListener("click", () => openLightbox(index));
-      grid.appendChild(item);
-    });
-  }
-
-  // Open lightbox
-  function openLightbox(index) {
-    currentIndex = index;
-    updateLightbox();
-    lightbox.classList.add("active");
-    document.body.style.overflow = "hidden";
-  }
-
-  // Close lightbox
-  function closeLightbox() {
-    lightbox.classList.remove("active");
-    document.body.style.overflow = "";
-    resetZoom();
-  }
-
-  // Update lightbox content
-  function updateLightbox() {
-    lightboxImage.src = images[currentIndex].src;
-    lightboxImage.alt = images[currentIndex].alt;
-    lightboxCounter.textContent = `${currentIndex + 1} / ${images.length}`;
-    resetZoom();
-  }
-
-  // Navigation
-  function nextImage() {
-    currentIndex = (currentIndex + 1) % images.length;
-    updateLightbox();
-  }
-
-  function prevImage() {
-    currentIndex = (currentIndex - 1 + images.length) % images.length;
-    updateLightbox();
-  }
-
-  // Zoom functions
-  function zoomIn() {
-    currentZoom = Math.min(currentZoom + 0.25, 3);
-    applyZoom();
-  }
-
-  function zoomOut() {
-    currentZoom = Math.max(currentZoom - 0.25, 0.5);
-    applyZoom();
-  }
-
-  function resetZoom() {
-    currentZoom = 1;
-    translateX = 0;
-    translateY = 0;
-    applyZoom();
-  }
-
-  function applyZoom() {
-    lightboxImage.style.transform = `scale(${currentZoom}) translate(${translateX}px, ${translateY}px)`;
-  }
-
-  // Mouse drag for panning when zoomed
-  imageContainer.addEventListener("mousedown", (e) => {
-    if (currentZoom > 1) {
-      isDragging = true;
-      startX = e.clientX - translateX;
-      startY = e.clientY - translateY;
-      imageContainer.classList.add("dragging");
-    }
-  });
-
-  document.addEventListener("mousemove", (e) => {
-    if (isDragging) {
-      translateX = e.clientX - startX;
-      translateY = e.clientY - startY;
-      applyZoom();
-    }
-  });
-
-  document.addEventListener("mouseup", () => {
-    if (isDragging) {
-      isDragging = false;
-      imageContainer.classList.remove("dragging");
-    }
-  });
-
-  // Touch swipe for navigation
-  lightbox.addEventListener(
-    "touchstart",
-    (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    },
-    { passive: true }
-  );
-
-  lightbox.addEventListener(
-    "touchend",
-    (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    },
-    { passive: true }
-  );
-
-  function handleSwipe() {
-    const diff = touchStartX - touchEndX;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) {
-        nextImage();
-      } else {
-        prevImage();
-      }
-    }
-  }
-
-  // Keyboard navigation
-  document.addEventListener("keydown", (e) => {
-    if (!lightbox.classList.contains("active")) return;
-
-    switch (e.key) {
-      case "Escape":
-        closeLightbox();
-        break;
-      case "ArrowLeft":
-        prevImage();
-        break;
-      case "ArrowRight":
-        nextImage();
-        break;
-      case "+":
-      case "=":
-        zoomIn();
-        break;
-      case "-":
-      case "_":
-        zoomOut();
-        break;
-      case "0":
-        resetZoom();
-        break;
-    }
-  });
-
-  // Event listeners
-  if (closeBtn) closeBtn.addEventListener("click", closeLightbox);
-  if (prevBtn) prevBtn.addEventListener("click", prevImage);
-  if (nextBtn) nextBtn.addEventListener("click", nextImage);
-  if (zoomInBtn) zoomInBtn.addEventListener("click", zoomIn);
-  if (zoomOutBtn) zoomOutBtn.addEventListener("click", zoomOut);
-  if (zoomResetBtn) zoomResetBtn.addEventListener("click", resetZoom);
-
-  // Close on background click
-  lightbox.addEventListener("click", (e) => {
-    if (e.target === lightbox) {
-      closeLightbox();
-    }
-  });
-
-  // Initialize gallery
-  loadGallery();
-}
-/* ---------------------------------------------------------
-   BEFORE/AFTER CAROUSEL & LIGHTBOX
-   --------------------------------------------------------- */
-function initBeforeAfterCarousel() {
-  const carousel = document.querySelector(".ba-carousel");
-  if (!carousel) return;
-
-  const slides = Array.from(document.querySelectorAll(".ba-slide"));
-  const indicators = Array.from(document.querySelectorAll(".ba-indicator"));
-  const prevBtn = document.querySelector(".ba-nav-prev");
-  const nextBtn = document.querySelector(".ba-nav-next");
-  const lightbox = document.getElementById("baLightbox");
-  const lightboxClose = document.querySelector(".ba-lightbox-close");
-  const lightboxPrev = document.querySelector(".ba-lightbox-prev");
-  const lightboxNext = document.querySelector(".ba-lightbox-next");
-
-  let currentSlide = 0;
-  let touchStartX = 0;
-  let touchEndX = 0;
-
-  // Slide data
-  const slideData = slides.map((slide) => ({
-    beforeImg: slide.querySelector(".ba-before").src,
-    afterImg: slide.querySelector(".ba-after").src,
-    title: slide.querySelector(".ba-slide-title").textContent,
-    description: slide.querySelector(".ba-slide-description").textContent,
-  }));
-
-  function goToSlide(index) {
-    currentSlide = (index + slides.length) % slides.length;
-
-    slides.forEach((slide, i) => {
-      slide.classList.toggle("active", i === currentSlide);
-    });
-
-    indicators.forEach((indicator, i) => {
-      indicator.classList.toggle("active", i === currentSlide);
-    });
-  }
-
-  function nextSlide() {
-    goToSlide(currentSlide + 1);
-  }
-
-  function prevSlide() {
-    goToSlide(currentSlide - 1);
-  }
-
-  // Navigation buttons
-  if (prevBtn) {
-    prevBtn.addEventListener("click", prevSlide);
-  }
-
-  if (nextBtn) {
-    nextBtn.addEventListener("click", nextSlide);
-  }
-
-  // Indicators
-  indicators.forEach((indicator, index) => {
-    indicator.addEventListener("click", () => goToSlide(index));
-  });
-
-  // Keyboard navigation
-  document.addEventListener("keydown", (e) => {
-    if (!lightbox.classList.contains("active")) {
-      if (e.key === "ArrowLeft") {
-        prevSlide();
-      } else if (e.key === "ArrowRight") {
-        nextSlide();
-      }
-    }
-  });
-
-  // Touch/Swipe support
-  carousel.addEventListener(
-    "touchstart",
-    (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    },
-    { passive: true }
-  );
-
-  carousel.addEventListener(
-    "touchend",
-    (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    },
-    { passive: true }
-  );
-
-  function handleSwipe() {
-    const diff = touchStartX - touchEndX;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) {
-        nextSlide();
-      } else {
-        prevSlide();
-      }
-    }
-  }
-
-  // Click to open lightbox
-  slides.forEach((slide, index) => {
-    const comparison = slide.querySelector(".ba-comparison");
-    if (comparison) {
-      comparison.addEventListener("click", () => openLightbox(index));
-    }
-  });
-
-  function openLightbox(index) {
-    const data = slideData[index];
-    document.getElementById("lightboxBefore").src = data.beforeImg;
-    document.getElementById("lightboxAfter").src = data.afterImg;
-    document.getElementById("lightboxTitle").textContent = data.title;
-    document.getElementById("lightboxDescription").textContent =
-      data.description;
-
-    lightbox.classList.add("active");
-    document.body.style.overflow = "hidden";
-    currentSlide = index;
-  }
-
-  function closeLightbox() {
-    lightbox.classList.remove("active");
-    document.body.style.overflow = "";
-  }
-
-  function updateLightbox() {
-    const data = slideData[currentSlide];
-    document.getElementById("lightboxBefore").src = data.beforeImg;
-    document.getElementById("lightboxAfter").src = data.afterImg;
-    document.getElementById("lightboxTitle").textContent = data.title;
-    document.getElementById("lightboxDescription").textContent =
-      data.description;
-  }
-
-  // Lightbox controls
-  if (lightboxClose) {
-    lightboxClose.addEventListener("click", closeLightbox);
-  }
-
-  if (lightboxPrev) {
-    lightboxPrev.addEventListener("click", () => {
-      prevSlide();
-      updateLightbox();
-    });
-  }
-
-  if (lightboxNext) {
-    lightboxNext.addEventListener("click", () => {
-      nextSlide();
-      updateLightbox();
-    });
-  }
-
-  // Close lightbox on background click
-  lightbox.addEventListener("click", (e) => {
-    if (e.target === lightbox) {
-      closeLightbox();
-    }
-  });
-
-  // Keyboard navigation in lightbox
-  document.addEventListener("keydown", (e) => {
-    if (lightbox.classList.contains("active")) {
-      if (e.key === "Escape") {
-        closeLightbox();
-      } else if (e.key === "ArrowLeft") {
-        prevSlide();
-        updateLightbox();
-      } else if (e.key === "ArrowRight") {
-        nextSlide();
-        updateLightbox();
-      }
-    }
-  });
-
-  // Touch/swipe in lightbox
-  lightbox.addEventListener(
-    "touchstart",
-    (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    },
-    { passive: true }
-  );
-
-  lightbox.addEventListener(
-    "touchend",
-    (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      const diff = touchStartX - touchEndX;
-      if (Math.abs(diff) > 50) {
-        if (diff > 0) {
-          nextSlide();
-        } else {
-          prevSlide();
-        }
-        updateLightbox();
-      }
-    },
-    { passive: true }
-  );
-}
-/* ---------------------------------------------------------
    VIDEO SHOWCASE - FILTERING & MODAL
    --------------------------------------------------------- */
 function initVideoShowcase() {
@@ -547,6 +84,9 @@ function initVideoShowcase() {
   });
 }
 /* ---------------------------------------------------------
+   VIDEO SHOWCASE - FILTERING & MODAL
+   --------------------------------------------------------- */\nfunction initVideoShowcase() {\n  const filterBtns = document.querySelectorAll(".filter-btn");\n  const videoItems = document.querySelectorAll(".video-item");\n  const videoPlayBtns = document.querySelectorAll(".video-play-btn");\n  const modal = document.getElementById("videoModal");\n  const modalClose = modal ? modal.querySelector(".modal-close") : null;\n  const videoContainer = document.getElementById("videoContainer");\n\n  if (!filterBtns.length) return;\n\n  // Filter functionality\n  filterBtns.forEach((btn) => {\n    btn.addEventListener("click", () => {\n      const filter = btn.getAttribute("data-filter");\n\n      // Update active button\n      filterBtns.forEach((b) => b.classList.remove("active"));\n      btn.classList.add("active");\n\n      // Filter videos\n      videoItems.forEach((item) => {\n        const category = item.getAttribute("data-category");\n        if (filter === "all" || category === filter) {\n          item.classList.remove("hidden");\n        } else {\n          item.classList.add("hidden");\n        }\n      });\n    });\n  });\n\n  // Video modal functionality\n  if (!modal || !videoContainer) return;\n\n  function openModal(videoType, videoId) {\n    let embedHTML = "";\n\n    if (videoType === "youtube") {\n      embedHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;\n    } else if (videoType === "vimeo") {\n      embedHTML = `<iframe src="https://player.vimeo.com/video/${videoId}?autoplay=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;\n    } else if (videoType === "mp4") {\n      embedHTML = `<video controls autoplay><source src="${videoId}" type="video/mp4">Your browser does not support the video tag.</video>`;\n    }\n\n    videoContainer.innerHTML = embedHTML;\n    modal.classList.add("active");\n    document.body.style.overflow = "hidden";\n  }\n\n  function closeModal() {\n    modal.classList.remove("active");\n    videoContainer.innerHTML = "";\n    document.body.style.overflow = "";\n  }\n\n  videoPlayBtns.forEach((btn) => {\n    btn.addEventListener("click", () => {\n      const videoType = btn.getAttribute("data-video-type");\n      const videoId = btn.getAttribute("data-video-id");\n      openModal(videoType, videoId);\n    });\n  });\n\n  if (modalClose) {\n    modalClose.addEventListener("click", closeModal);\n  }\n\n  // Close modal on background click\n  modal.addEventListener("click", (e) => {\n    if (e.target === modal) {\n      closeModal();\n    }\n  });\n\n  // Close modal with Escape key\n  document.addEventListener("keydown", (e) => {\n    if (e.key === "Escape" && modal.classList.contains("active")) {\n      closeModal();\n    }\n  });\n}\n\n/* ---------------------------------------------------------
+   VERTICAL FULL-SCREEN SCROLL EXPERIENCE
    Inspired by landonorris.com with fade-in panels
    --------------------------------------------------------- */
 
@@ -612,6 +152,128 @@ function hideScrollIndicator() {
   if (indicator && window.scrollY > 100) {
     indicator.style.opacity = "0";
     window.removeEventListener("scroll", hideScrollIndicator);
+  }
+}
+
+/* ---------------------------------------------------------
+   PHOTOSHOP CAROUSEL
+   --------------------------------------------------------- */
+function initPhotoshopCarousel() {
+  const carousel = document.querySelector(".photoshop-carousel");
+  if (!carousel) return;
+
+  const slides = Array.from(carousel.querySelectorAll(".carousel-slide"));
+  const dots = Array.from(carousel.querySelectorAll(".carousel-dot"));
+  const prevBtn = carousel.querySelector(".carousel-prev");
+  const nextBtn = carousel.querySelector(".carousel-next");
+
+  let currentIndex = 0;
+  let timer = null;
+  let isTransitioning = false;
+
+  function goToSlide(index) {
+    if (isTransitioning) return;
+    isTransitioning = true;
+
+    currentIndex = (index + slides.length) % slides.length;
+
+    slides.forEach((slide, i) => {
+      slide.classList.toggle("active", i === currentIndex);
+    });
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle("active", i === currentIndex);
+    });
+
+    setTimeout(() => {
+      isTransitioning = false;
+    }, 600);
+  }
+
+  function nextSlide() {
+    goToSlide(currentIndex + 1);
+  }
+
+  function prevSlide() {
+    goToSlide(currentIndex - 1);
+  }
+
+  function startAutoplay() {
+    stopAutoplay();
+    timer = setInterval(nextSlide, 5000);
+  }
+
+  function stopAutoplay() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  // Navigation buttons
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => {
+      prevSlide();
+      startAutoplay();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      nextSlide();
+      startAutoplay();
+    });
+  }
+
+  // Dot navigation
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      goToSlide(index);
+      startAutoplay();
+    });
+  });
+
+  // Pause on hover
+  carousel.addEventListener("mouseenter", stopAutoplay);
+  carousel.addEventListener("mouseleave", startAutoplay);
+
+  // Touch/swipe support
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  carousel.addEventListener(
+    "touchstart",
+    (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      stopAutoplay();
+    },
+    { passive: true }
+  );
+
+  carousel.addEventListener(
+    "touchend",
+    (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+      }
+      startAutoplay();
+    },
+    { passive: true }
+  );
+
+  // Respect reduced motion
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  if (!reduceMotion) {
+    startAutoplay();
   }
 }
 
@@ -752,6 +414,7 @@ function initParallaxHeadings() {
 // Initialize on load
 window.addEventListener("load", () => {
   initScrollPanels();
+  initPhotoshopCarousel();
   initGalleryInteractions();
   initNavEnhancements();
   initSectionReveal();
@@ -762,8 +425,6 @@ window.addEventListener("load", () => {
   initContactForm();
   initMobileNav();
   initVideoShowcase();
-  initBeforeAfterCarousel();
-  initMasonryGallery();
 
   // Add scroll listener for parallax
   window.addEventListener("scroll", onScroll, { passive: true });

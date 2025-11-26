@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Architecture - Rob Fiala</title>
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="minimal-nav">
+      <a href="../../index.html" class="nav-logo">
+        <span class="logo-signature">Rob Fiala</span>
+        <span class="logo-tagline">Visual Stories</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <div class="nav-links">
+        <a class="nav-cta" href="../../index.html">Home</a>
+        <a class="nav-cta" href="../../pictures/index.html">Pictures</a>
+        <a class="nav-cta" href="../../photoshop/index.html">Photoshop</a>
+        <a class="nav-cta" href="../../videos/index.html">Videos</a>
+        <a class="nav-cta" href="../../about/index.html">About</a>
+        <a class="nav-cta" href="../../contact/index.html">Contact</a>
+      </div>
+    </nav>
+
+    <!-- Masonry Gallery Section -->
+    <section class="masonry-gallery-section" data-category="architecture">
+      <div class="masonry-header">
+        <h1 class="masonry-title">Architecture</h1>
+        <p class="masonry-subtitle">Structural beauty through the lens</p>
+      </div>
+
+      <div class="masonry-grid" id="masonryGrid">
+        <!-- Images will be loaded dynamically -->
+      </div>
+    </section>
+
+    <!-- Fullscreen Lightbox -->
+    <div class="masonry-lightbox" id="masonryLightbox">
+      <button class="masonry-lightbox-close" aria-label="Close lightbox">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <button
+        class="masonry-lightbox-nav masonry-lightbox-prev"
+        aria-label="Previous image"
+      >
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <button
+        class="masonry-lightbox-nav masonry-lightbox-next"
+        aria-label="Next image"
+      >
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+      <div class="masonry-lightbox-content">
+        <div class="masonry-lightbox-image-container">
+          <img
+            id="lightboxImage"
+            class="masonry-lightbox-image"
+            src=""
+            alt=""
+          />
+        </div>
+        <div class="masonry-lightbox-zoom-controls">
+          <button class="zoom-btn zoom-in" aria-label="Zoom in">+</button>
+          <button class="zoom-btn zoom-out" aria-label="Zoom out">−</button>
+          <button class="zoom-btn zoom-reset" aria-label="Reset zoom">⟲</button>
+        </div>
+        <div class="masonry-lightbox-counter">
+          <span id="lightboxCounter">1 / 1</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../script.js"></script>
+  </body>
+</html>

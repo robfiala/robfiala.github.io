@@ -18,7 +18,14 @@
         <span class="logo-signature">Rob Fiala</span>
         <span class="logo-tagline">Visual Stories</span>
       </a>
-      <div style="display: flex; gap: 24px; align-items: center">
+      <button
+        class="nav-toggle"
+        aria-label="Toggle navigation"
+        aria-expanded="false"
+      >
+        <span class="hamburger"></span>
+      </button>
+      <div class="nav-links">
         <a class="nav-cta" href="../index.html">Home</a>
         <a class="nav-cta" href="../pictures/index.html" aria-current="page"
           >Pictures</a
@@ -29,199 +36,70 @@
       </div>
     </nav>
 
-    <section class="gallery-section" style="padding-top: 160px">
+    <section
+      class="gallery-section"
+      id="photography"
+      style="padding-top: 160px"
+    >
       <div class="brand-divider"></div>
       <div class="section-container">
-        <h1 class="section-heading parallax-heading anim-fade">Photography</h1>
-        <p class="section-subheading anim-fade">
-          A selection of captured moments — light, emotion, narrative.
-        </p>
-        <div class="gallery-grid">
-          <!-- Gallery Item 1 -->
-          <div class="gallery-item anim-fade" aria-label="Urban Dusk">
-            <picture>
-              <source
-                media="(min-width:900px)"
-                srcset="https://picsum.photos/seed/picA/1200/900"
-              />
-              <img
-                src="https://picsum.photos/seed/picA/600/450"
-                alt="Urban dusk skyline with soft purple hues"
-                loading="lazy"
-                width="600"
-                height="450"
-              />
-            </picture>
-            <div class="gallery-overlay">
-              <div>
-                <span class="gallery-label">Urban Dusk</span>
-                <p class="gallery-desc">City fading into evening gradients.</p>
-              </div>
-            </div>
-          </div>
-          <!-- Gallery Item 2 -->
-          <div class="gallery-item anim-fade" aria-label="Golden Silhouettes">
-            <picture>
-              <source
-                media="(min-width:900px)"
-                srcset="https://picsum.photos/seed/picB/1200/900"
-              />
-              <img
-                src="https://picsum.photos/seed/picB/600/450"
-                alt="Silhouetted figures in golden backlight"
-                loading="lazy"
-                width="600"
-                height="450"
-              />
-            </picture>
-            <div class="gallery-overlay">
-              <div>
-                <span class="gallery-label">Golden Silhouettes</span>
-                <p class="gallery-desc">Backlit human forms at sunset.</p>
-              </div>
-            </div>
-          </div>
-          <!-- Gallery Item 3 -->
-          <div class="gallery-item anim-fade" aria-label="Portrait Study">
-            <picture>
-              <source
-                media="(min-width:900px)"
-                srcset="https://picsum.photos/seed/picC/1200/900"
-              />
-              <img
-                src="https://picsum.photos/seed/picC/600/450"
-                alt="Close portrait with soft directional light"
-                loading="lazy"
-                width="600"
-                height="450"
-              />
-            </picture>
-            <div class="gallery-overlay">
-              <div>
-                <span class="gallery-label">Portrait Study</span>
-                <p class="gallery-desc">Character framed in minimal light.</p>
-              </div>
-            </div>
-          </div>
-          <!-- Gallery Item 4 -->
-          <div class="gallery-item anim-fade" aria-label="Rain Geometry">
-            <picture>
-              <source
-                media="(min-width:900px)"
-                srcset="https://picsum.photos/seed/picD/1200/900"
-              />
-              <img
-                src="https://picsum.photos/seed/picD/600/450"
-                alt="Abstract reflections in rain puddles"
-                loading="lazy"
-                width="600"
-                height="450"
-              />
-            </picture>
-            <div class="gallery-overlay">
-              <div>
-                <span class="gallery-label">Rain Geometry</span>
-                <p class="gallery-desc">
-                  Reflections forming abstract patterns.
-                </p>
-              </div>
-            </div>
-          </div>
-          <!-- Gallery Item 5 -->
-          <div class="gallery-item anim-fade" aria-label="Forest Breath">
-            <picture>
-              <source
-                media="(min-width:900px)"
-                srcset="https://picsum.photos/seed/picE/1200/900"
-              />
-              <img
-                src="https://picsum.photos/seed/picE/600/450"
-                alt="Misty forest with layered depth"
-                loading="lazy"
-                width="600"
-                height="450"
-              />
-            </picture>
-            <div class="gallery-overlay">
-              <div>
-                <span class="gallery-label">Forest Breath</span>
-                <p class="gallery-desc">
-                  Atmospheric layers of quiet woodland.
-                </p>
-              </div>
-            </div>
-          </div>
-          <!-- Gallery Item 6 -->
-          <div class="gallery-item anim-fade" aria-label="Color Motion">
-            <picture>
-              <source
-                media="(min-width:900px)"
-                srcset="https://picsum.photos/seed/picF/1200/900"
-              />
-              <img
-                src="https://picsum.photos/seed/picF/600/450"
-                alt="Long exposure light trails abstract"
-                loading="lazy"
-                width="600"
-                height="450"
-              />
-            </picture>
-            <div class="gallery-overlay">
-              <div>
-                <span class="gallery-label">Color Motion</span>
-                <p class="gallery-desc">Light traces forming kinetic energy.</p>
-              </div>
-            </div>
-          </div>
-          <!-- Gallery Item 7 -->
-          <div class="gallery-item anim-fade" aria-label="Architectural Lines">
-            <picture>
-              <source
-                media="(min-width:900px)"
-                srcset="https://picsum.photos/seed/picG/1200/900"
-              />
-              <img
-                src="https://picsum.photos/seed/picG/600/450"
-                alt="Minimal architecture with strong lines"
-                loading="lazy"
-                width="600"
-                height="450"
-              />
-            </picture>
-            <div class="gallery-overlay">
-              <div>
-                <span class="gallery-label">Architectural Lines</span>
-                <p class="gallery-desc">Geometry, balance, and perspective.</p>
-              </div>
-            </div>
-          </div>
-          <!-- Gallery Item 8 -->
-          <div class="gallery-item anim-fade" aria-label="Sea Glass">
-            <picture>
-              <source
-                media="(min-width:900px)"
-                srcset="https://picsum.photos/seed/picH/1200/900"
-              />
-              <img
-                src="https://picsum.photos/seed/picH/600/450"
-                alt="Coastal textures and soft gradients"
-                loading="lazy"
-                width="600"
-                height="450"
-              />
-            </picture>
-            <div class="gallery-overlay">
-              <div>
-                <span class="gallery-label">Sea Glass</span>
-                <p class="gallery-desc">Soft palette shaped by shoreline.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div style="text-align: center; margin-top: 70px">
-          <a href="../photoshop/index.html" class="cta-button"
-            >Explore Photoshop Work →</a
+        <h2 class="section-heading parallax-heading anim-fade">Photography</h2>
+        <div
+          class="category-tiles anim-fade"
+          aria-label="Photography categories"
+        >
+          <a
+            class="category-tile"
+            href="/pictures/carphotography/index.html"
+            aria-label="Car Photography"
           >
+            <img
+              src="https://picsum.photos/seed/car/900/600"
+              alt="Car photography category thumbnail"
+            />
+            <div class="category-title-overlay">
+              <span class="category-title">Car Photography</span>
+            </div>
+          </a>
+          <a
+            class="category-tile"
+            href="/pictures/architecture/index.html"
+            aria-label="Architecture"
+          >
+            <img
+              src="https://picsum.photos/seed/architecture/900/600"
+              alt="Architecture category thumbnail"
+            />
+            <div class="category-title-overlay">
+              <span class="category-title">Architecture</span>
+            </div>
+          </a>
+          <a
+            class="category-tile"
+            href="/pictures/landscapes/index.html"
+            aria-label="Landscapes"
+          >
+            <img
+              src="https://picsum.photos/seed/landscapes/900/600"
+              alt="Landscapes category thumbnail"
+            />
+            <div class="category-title-overlay">
+              <span class="category-title">Landscapes</span>
+            </div>
+          </a>
+          <a
+            class="category-tile"
+            href="/pictures/studiowork/index.html"
+            aria-label="Studio Work"
+          >
+            <img
+              src="https://picsum.photos/seed/studio/900/600"
+              alt="Studio work category thumbnail"
+            />
+            <div class="category-title-overlay">
+              <span class="category-title">Studio Work</span>
+            </div>
+          </a>
         </div>
       </div>
     </section>

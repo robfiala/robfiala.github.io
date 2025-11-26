@@ -3,171 +3,127 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Photoshop Before & After — Rob Fiala</title>
+    <title>Photoshop - Rob Fiala</title>
+    <link rel="stylesheet" href="../css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body>
+    <!-- Navigation -->
     <nav class="minimal-nav">
       <a href="../index.html" class="nav-logo">
         <span class="logo-signature">Rob Fiala</span>
         <span class="logo-tagline">Visual Stories</span>
       </a>
-      <div style="display: flex; gap: 24px; align-items: center">
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <div class="nav-links">
         <a class="nav-cta" href="../index.html">Home</a>
         <a class="nav-cta" href="../pictures/index.html">Pictures</a>
         <a class="nav-cta" href="../photoshop/index.html" aria-current="page"
           >Photoshop</a
         >
+        <a class="nav-cta" href="../videos/index.html">Videos</a>
         <a class="nav-cta" href="../about/index.html">About</a>
         <a class="nav-cta" href="../contact/index.html">Contact</a>
       </div>
     </nav>
 
-    <section class="before-after-section" style="padding-top: 160px">
-      <div class="brand-divider"></div>
-      <div class="section-container">
-        <h1 class="section-heading parallax-heading anim-fade">
-          Photoshop Artistry
-        </h1>
-        <p class="section-subheading anim-fade">
-          Hover or drag each frame to reveal transformation detail.
+    <!-- Masonry Gallery Section -->
+    <section class="masonry-gallery-section" data-category="photoshop">
+      <div class="masonry-header">
+        <h1 class="masonry-title">Photoshop</h1>
+        <p class="masonry-subtitle">
+          Professional editing and creative retouching
         </p>
-        <div class="before-after-grid">
-          <!-- BA Item 1 -->
-          <div class="before-after-container anim-fade" data-ba="ps1">
-            <div class="ba-wrapper">
-              <img
-                src="https://picsum.photos/seed/psBefore1/900/600"
-                alt="Before color-muted portrait"
-                class="ba-image ba-before"
-                loading="lazy"
-                width="900"
-                height="600"
-              />
-              <img
-                src="https://picsum.photos/seed/psAfter1/900/600"
-                alt="After vivid retouched portrait"
-                class="ba-image ba-after"
-                loading="lazy"
-                width="900"
-                height="600"
-              />
-              <div class="ba-slider">
-                <div class="ba-handle">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="ba-labels">
-              <span class="ba-label">Before</span>
-              <span class="ba-label">After</span>
-            </div>
-          </div>
-          <!-- BA Item 2 -->
-          <div class="before-after-container anim-fade" data-ba="ps2">
-            <div class="ba-wrapper">
-              <img
-                src="https://picsum.photos/seed/psBefore2/900/600"
-                alt="Before flat landscape"
-                class="ba-image ba-before"
-                loading="lazy"
-                width="900"
-                height="600"
-              />
-              <img
-                src="https://picsum.photos/seed/psAfter2/900/600"
-                alt="After enhanced dramatic landscape"
-                class="ba-image ba-after"
-                loading="lazy"
-                width="900"
-                height="600"
-              />
-              <div class="ba-slider">
-                <div class="ba-handle">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="ba-labels">
-              <span class="ba-label">Before</span>
-              <span class="ba-label">After</span>
-            </div>
-          </div>
-          <!-- BA Item 3 -->
-          <div class="before-after-container anim-fade" data-ba="ps3">
-            <div class="ba-wrapper">
-              <img
-                src="https://picsum.photos/seed/psBefore3/900/600"
-                alt="Before product shot basic lighting"
-                class="ba-image ba-before"
-                loading="lazy"
-                width="900"
-                height="600"
-              />
-              <img
-                src="https://picsum.photos/seed/psAfter3/900/600"
-                alt="After refined product highlight and contrast"
-                class="ba-image ba-after"
-                loading="lazy"
-                width="900"
-                height="600"
-              />
-              <div class="ba-slider">
-                <div class="ba-handle">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="ba-labels">
-              <span class="ba-label">Before</span>
-              <span class="ba-label">After</span>
-            </div>
-          </div>
-        </div>
-        <div style="text-align: center; margin-top: 70px">
-          <a href="../pictures/index.html" class="cta-button"
-            >View Photography →</a
-          >
-        </div>
+      </div>
+
+      <div class="masonry-grid" id="masonryGrid">
+        <!-- Images will be loaded dynamically -->
       </div>
     </section>
 
-    <script src="../script.js" defer></script>
+    <!-- Fullscreen Lightbox -->
+    <div class="masonry-lightbox" id="masonryLightbox">
+      <button class="masonry-lightbox-close" aria-label="Close lightbox">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <button
+        class="masonry-lightbox-nav masonry-lightbox-prev"
+        aria-label="Previous image"
+      >
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <button
+        class="masonry-lightbox-nav masonry-lightbox-next"
+        aria-label="Next image"
+      >
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+      <div class="masonry-lightbox-content">
+        <div class="masonry-lightbox-image-container">
+          <img
+            id="lightboxImage"
+            class="masonry-lightbox-image"
+            src=""
+            alt=""
+          />
+        </div>
+        <div class="masonry-lightbox-zoom-controls">
+          <button class="zoom-btn zoom-in" aria-label="Zoom in">+</button>
+          <button class="zoom-btn zoom-out" aria-label="Zoom out"></button>
+          <button class="zoom-btn zoom-reset" aria-label="Reset zoom"></button>
+        </div>
+        <div class="masonry-lightbox-counter">
+          <span id="lightboxCounter">1 / 1</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="../script.js"></script>
   </body>
 </html>
