@@ -337,6 +337,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.3s ease-out;
 }
 
 .panel-bg {
@@ -581,6 +582,7 @@ body {
   background: var(--bg-primary);
   padding: 80px 5%;
   position: relative;
+  transition: transform 0.3s ease-out;
 }
 
 /* Center social icons within their container */
@@ -1014,7 +1016,7 @@ body {
   display: block;
   background: var(--gray-900);
   border: 1px solid transparent;
-  transition: transform 0.5s var(--transition-smooth),
+  transition: transform 0.3s ease-out,
     border-color 0.3s var(--transition-smooth),
     box-shadow 0.3s var(--transition-smooth);
 }

@@ -498,6 +498,9 @@ function initComingSoonFollow() {
   const rangeX = 60; // subtle horizontal dispersion
   const rangeY = 25; // subtle vertical dispersion
 
+  // Device orientation support for mobile tilt
+  let useDeviceOrientation = false;
+
   function onMove(e) {
     const rect = container.getBoundingClientRect();
     // Handle both mouse and touch events
@@ -514,6 +517,24 @@ function initComingSoonFollow() {
     targetBeforeX = nx * rangeX;
     targetBeforeY = ny * rangeY;
     // Cyan layer (after) moves opposite for chromatic separation
+    targetAfterX = -nx * rangeX;
+    targetAfterY = -ny * rangeY;
+  }
+
+  function onDeviceOrientation(e) {
+    if (!useDeviceOrientation) return;
+
+    // beta: front-back tilt (-180 to 180), gamma: left-right tilt (-90 to 90)
+    const beta = e.beta || 0;
+    const gamma = e.gamma || 0;
+
+    // Normalize to -0.5 to 0.5 range
+    const nx = Math.max(-0.5, Math.min(0.5, gamma / 90));
+    const ny = Math.max(-0.5, Math.min(0.5, (beta - 90) / 90));
+
+    // Apply movement
+    targetBeforeX = nx * rangeX;
+    targetBeforeY = ny * rangeY;
     targetAfterX = -nx * rangeX;
     targetAfterY = -ny * rangeY;
   }
@@ -545,6 +566,39 @@ function initComingSoonFollow() {
 
   container.addEventListener("mousemove", onMove);
   container.addEventListener("touchmove", onMove, { passive: true });
+
+  // Request device orientation permission and enable tilt on mobile
+  if (
+    typeof DeviceOrientationEvent !== "undefined" &&
+    typeof DeviceOrientationEvent.requestPermission === "function"
+  ) {
+    // iOS 13+ requires permission
+    container.addEventListener(
+      "click",
+      () => {
+        DeviceOrientationEvent.requestPermission()
+          .then((permissionState) => {
+            if (permissionState === "granted") {
+              useDeviceOrientation = true;
+              window.addEventListener(
+                "deviceorientation",
+                onDeviceOrientation,
+                { passive: true }
+              );
+            }
+          })
+          .catch(console.error);
+      },
+      { once: true }
+    );
+  } else if (window.DeviceOrientationEvent) {
+    // Android and other devices
+    useDeviceOrientation = true;
+    window.addEventListener("deviceorientation", onDeviceOrientation, {
+      passive: true,
+    });
+  }
+
   animate();
 }
 
@@ -925,6 +979,92 @@ function initInteractiveBlur() {
   });
 }
 
+/* ---------------------------------------------------------
+   DEVICE TILT EFFECTS (Mobile)
+   --------------------------------------------------------- */
+function initDeviceTiltEffects() {
+  // Only run on devices with orientation support
+  if (!window.DeviceOrientationEvent) return;
+
+  const heroPanels = document.querySelectorAll(".hero-panel");
+  const categoryTiles = document.querySelectorAll(".category-tile");
+  const contactPanel = document.querySelector(".contact-panel");
+
+  let permissionGranted = false;
+
+  function handleOrientation(e) {
+    if (!permissionGranted) return;
+
+    const beta = e.beta || 0; // front-back tilt (-180 to 180)
+    const gamma = e.gamma || 0; // left-right tilt (-90 to 90)
+
+    // Normalize values
+    const tiltX = Math.max(-15, Math.min(15, gamma / 6)); // -15 to 15 degrees
+    const tiltY = Math.max(-15, Math.min(15, (beta - 90) / 6)); // -15 to 15 degrees
+
+    // Apply subtle 3D transform to hero panels
+    heroPanels.forEach((panel) => {
+      if (isElementInViewport(panel)) {
+        panel.style.transform = `perspective(1000px) rotateX(${-tiltY}deg) rotateY(${tiltX}deg)`;
+      }
+    });
+
+    // Apply tilt to category tiles for depth effect
+    categoryTiles.forEach((tile, index) => {
+      if (isElementInViewport(tile)) {
+        const offsetX = tiltX * (1 + index * 0.1);
+        const offsetY = tiltY * (1 + index * 0.1);
+        tile.style.transform = `perspective(1000px) rotateX(${
+          -offsetY * 0.5
+        }deg) rotateY(${offsetX * 0.5}deg)`;
+      }
+    });
+
+    // Parallax effect on contact section
+    if (contactPanel && isElementInViewport(contactPanel)) {
+      const parallaxX = gamma * 0.5;
+      const parallaxY = (beta - 90) * 0.5;
+      contactPanel.style.transform = `translate(${parallaxX}px, ${parallaxY}px)`;
+    }
+  }
+
+  function isElementInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return rect.top < window.innerHeight && rect.bottom > 0;
+  }
+
+  // Request permission for iOS 13+
+  if (typeof DeviceOrientationEvent.requestPermission === "function") {
+    // Add tap listener to request permission
+    document.body.addEventListener(
+      "click",
+      () => {
+        if (!permissionGranted) {
+          DeviceOrientationEvent.requestPermission()
+            .then((permissionState) => {
+              if (permissionState === "granted") {
+                permissionGranted = true;
+                window.addEventListener(
+                  "deviceorientation",
+                  handleOrientation,
+                  { passive: true }
+                );
+              }
+            })
+            .catch(console.error);
+        }
+      },
+      { once: true }
+    );
+  } else {
+    // Android and other devices - auto enable
+    permissionGranted = true;
+    window.addEventListener("deviceorientation", handleOrientation, {
+      passive: true,
+    });
+  }
+}
+
 // Initialize on load
 window.addEventListener("load", () => {
   initScrollPanels();
@@ -943,6 +1083,7 @@ window.addEventListener("load", () => {
   initScrollIndicator();
   initLensRingCarousels();
   initInteractiveBlur();
+  initDeviceTiltEffects();
 
   // Add scroll listener for parallax
   window.addEventListener("scroll", onScroll, { passive: true });
