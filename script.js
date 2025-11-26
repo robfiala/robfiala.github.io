@@ -779,6 +779,78 @@ function initScrollIndicator() {
   window.addEventListener("scroll", handleScroll, { passive: true });
 }
 
+/* ---------------------------------------------------------
+   LENS RING CAROUSEL ROTATION
+   --------------------------------------------------------- */
+function initLensRingCarousels() {
+  const shutterRing = document.getElementById("shutterRing");
+  const focalRing = document.getElementById("focalRing");
+
+  if (!shutterRing && !focalRing) return;
+
+  let ticking = false;
+
+  function updateRotation() {
+    const scrollY = window.scrollY || window.pageYOffset;
+
+    // Don't rotate the ring itself - move each value individually
+    if (shutterRing) {
+      const shutterRotation = scrollY * 0.15; // degrees
+      updateValuePositions(shutterRing, shutterRotation);
+    }
+
+    if (focalRing) {
+      const focalRotation = scrollY * 0.2; // slightly faster
+      updateValuePositions(focalRing, focalRotation);
+    }
+
+    ticking = false;
+  }
+
+  function updateValuePositions(ring, scrollRotation) {
+    const values = ring.querySelectorAll(".lens-value");
+    const radius = 50; // pixels from center
+
+    values.forEach((value, index) => {
+      // Each value has a base position (30deg apart)
+      const baseRotation = index * 30;
+
+      // Calculate actual rotation with scroll
+      const actualRotation = baseRotation - scrollRotation;
+      const radians = (actualRotation * Math.PI) / 180;
+
+      // Calculate X and Y positions on the circle
+      const x = Math.sin(radians) * radius;
+      const z = Math.cos(radians) * radius;
+
+      // Only show values with positive Z (facing viewer)
+      let opacity = 0;
+      if (z > -10) {
+        if (z > 10) {
+          opacity = 1;
+        } else {
+          opacity = (z + 10) / 20;
+        }
+      }
+
+      // Position the value at calculated X/Z but always facing forward
+      // Use translate3d for X and Z positioning, keeping text always horizontal and facing camera
+      value.style.transform = `translate(-50%, -50%) translate3d(${x}px, 0, ${z}px) rotate(-90deg)`;
+      value.style.opacity = opacity;
+    });
+  }
+
+  function handleScroll() {
+    if (!ticking) {
+      window.requestAnimationFrame(updateRotation);
+      ticking = true;
+    }
+  }
+
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  updateRotation(); // Initial state
+}
+
 // Initialize on load
 window.addEventListener("load", () => {
   initScrollPanels();
@@ -795,6 +867,7 @@ window.addEventListener("load", () => {
   initBeforeAfterCarousel();
   initMasonryGallery();
   initScrollIndicator();
+  initLensRingCarousels();
 
   // Add scroll listener for parallax
   window.addEventListener("scroll", onScroll, { passive: true });

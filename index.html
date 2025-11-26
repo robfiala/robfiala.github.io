@@ -42,7 +42,10 @@
       <div
         class="panel-bg"
         style="
-          background-image: url('https://picsum.photos/seed/hero1/1920/1080');
+          background-image: url('/assets/main/hero.jpg');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
         "
       ></div>
       <div class="panel-content">
@@ -59,7 +62,10 @@
       <div
         class="panel-bg"
         style="
-          background-image: url('https://picsum.photos/seed/hero2/1920/1080');
+          background-image: url('/assets/main/captured.jpg');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
         "
       ></div>
       <div class="panel-content">
@@ -70,7 +76,25 @@
 
     <!-- Gallery Section -->
     <section class="gallery-section" id="photography">
-      <div class="brand-divider"></div>
+      <!-- Lens Ring Carousel - Shutter Speed -->
+      <div class="lens-ring-wrapper" data-carousel="shutter">
+        <div class="lens-ring-outer">
+          <div class="lens-ring-inner" id="shutterRing">
+            <div class="lens-value" style="--index: 0">1/8000</div>
+            <div class="lens-value" style="--index: 1">1/4000</div>
+            <div class="lens-value" style="--index: 2">1/2000</div>
+            <div class="lens-value" style="--index: 3">1/1000</div>
+            <div class="lens-value" style="--index: 4">1/500</div>
+            <div class="lens-value" style="--index: 5">1/250</div>
+            <div class="lens-value" style="--index: 6">1/125</div>
+            <div class="lens-value" style="--index: 7">1/60</div>
+            <div class="lens-value" style="--index: 8">1/30</div>
+            <div class="lens-value" style="--index: 9">1/15</div>
+            <div class="lens-value" style="--index: 10">1/8</div>
+            <div class="lens-value" style="--index: 11">1/4</div>
+          </div>
+        </div>
+      </div>
       <div class="section-container">
         <h2 class="section-heading parallax-heading anim-fade">Photography</h2>
         <div
@@ -83,7 +107,7 @@
             aria-label="Car Photography"
           >
             <img
-              src="https://picsum.photos/seed/car/900/600"
+              src="/assets/main/carphotography.jpg"
               alt="Car photography category thumbnail"
             />
             <div class="category-title-overlay">
@@ -96,7 +120,7 @@
             aria-label="Architecture"
           >
             <img
-              src="https://picsum.photos/seed/architecture/900/600"
+              src="/assets/main/architecture.jpg"
               alt="Architecture category thumbnail"
             />
             <div class="category-title-overlay">
@@ -135,7 +159,25 @@
 
     <!-- Videography Section -->
     <section class="gallery-section" id="videography">
-      <div class="brand-divider"></div>
+      <!-- Lens Ring Carousel - Focal Length -->
+      <div class="lens-ring-wrapper" data-carousel="focal">
+        <div class="lens-ring-outer">
+          <div class="lens-ring-inner" id="focalRing">
+            <div class="lens-value" style="--index: 0">14mm</div>
+            <div class="lens-value" style="--index: 1">24mm</div>
+            <div class="lens-value" style="--index: 2">35mm</div>
+            <div class="lens-value" style="--index: 3">50mm</div>
+            <div class="lens-value" style="--index: 4">70mm</div>
+            <div class="lens-value" style="--index: 5">85mm</div>
+            <div class="lens-value" style="--index: 6">105mm</div>
+            <div class="lens-value" style="--index: 7">135mm</div>
+            <div class="lens-value" style="--index: 8">200mm</div>
+            <div class="lens-value" style="--index: 9">300mm</div>
+            <div class="lens-value" style="--index: 10">400mm</div>
+            <div class="lens-value" style="--index: 11">600mm</div>
+          </div>
+        </div>
+      </div>
       <div class="section-container">
         <h2 class="section-heading parallax-heading anim-fade">Videography</h2>
         <div class="single-tile-container anim-fade">
@@ -160,7 +202,10 @@
       <div
         class="panel-bg"
         style="
-          background-image: url('https://picsum.photos/seed/hero3/1920/1080');
+          background-image: url('/assets/main/crafted.jpg');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
         "
       ></div>
       <div class="panel-content">
@@ -198,18 +243,33 @@
       </div>
     </section>
 
-    <section class="hero-panel" id="panel-4">
+    <!-- Visual Divider -->
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 5%;
+        background: var(--bg-primary);
+      "
+    >
       <div
-        class="panel-bg"
         style="
-          background-image: url('https://picsum.photos/seed/hero4/1920/1080');
+          height: 2px;
+          width: 200px;
+          background: linear-gradient(
+            90deg,
+            transparent 0%,
+            var(--accent-primary) 20%,
+            var(--accent-hover) 50%,
+            var(--accent-primary) 80%,
+            transparent 100%
+          );
+          box-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--accent-glow);
+          animation: pulse-glow 3s ease-in-out infinite;
         "
       ></div>
-      <div class="panel-content">
-        <h2 class="panel-heading">Projects</h2>
-        <p class="panel-text">Complete creative series</p>
-      </div>
-    </section>
+    </div>
 
     <!-- Final CTA Section -->
     <section id="contact" class="contact-panel">
