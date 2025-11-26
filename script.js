@@ -997,46 +997,89 @@ function initDeviceTiltEffects() {
   // Only run on devices with orientation support
   if (!window.DeviceOrientationEvent) return;
 
-  const heroPanels = document.querySelectorAll(".hero-panel");
-  const categoryTiles = document.querySelectorAll(".category-tile");
   const contactPanel = document.querySelector(".contact-panel");
+  const panelHeadings = document.querySelectorAll(".panel-heading");
+  const panelTexts = document.querySelectorAll(".panel-text");
+  const categoryTitles = document.querySelectorAll(".category-title");
+  const socialLinks = document.querySelectorAll(".social-links a");
+  const ctaButtons = document.querySelectorAll(".cta-button");
 
   let permissionGranted = false;
+  let lastUpdate = 0;
+  const throttleMs = 50; // Throttle to 20fps for better performance
 
   function handleOrientation(e) {
     if (!permissionGranted) return;
 
+    // Throttle updates for performance
+    const now = Date.now();
+    if (now - lastUpdate < throttleMs) return;
+    lastUpdate = now;
+
     const beta = e.beta || 0; // front-back tilt (-180 to 180)
     const gamma = e.gamma || 0; // left-right tilt (-90 to 90)
 
-    // Normalize values - more subtle for mobile
-    const tiltX = Math.max(-8, Math.min(8, gamma / 11)); // -8 to 8 degrees
-    const tiltY = Math.max(-8, Math.min(8, (beta - 90) / 11)); // -8 to 8 degrees
+    // Normalize tilt values
+    const tiltX = gamma * 0.5; // -45 to 45
+    const tiltY = (beta - 90) * 0.5; // adjusted for portrait
 
-    // Apply subtle 3D transform to hero panels
-    heroPanels.forEach((panel) => {
-      if (isElementInViewport(panel)) {
-        panel.style.transform = `perspective(1000px) rotateX(${-tiltY}deg) rotateY(${tiltX}deg) scale(1)`;
-      }
-    });
-
-    // Apply tilt to category tiles for depth effect
-    categoryTiles.forEach((tile) => {
-      if (isElementInViewport(tile)) {
-        const isHovered = tile.matches(":hover");
-        const baseScale = isHovered ? 1.03 : 1;
-        tile.style.transform = `perspective(1000px) rotateX(${
-          -tiltY * 0.3
-        }deg) rotateY(${tiltX * 0.3}deg) scale(${baseScale})`;
-      }
-    });
-
-    // Parallax effect on contact section
+    // Parallax effect on contact panel
     if (contactPanel && isElementInViewport(contactPanel)) {
-      const parallaxX = gamma * 0.5;
-      const parallaxY = (beta - 90) * 0.5;
+      const parallaxX = Math.max(-15, Math.min(15, gamma * 0.3));
+      const parallaxY = Math.max(-15, Math.min(15, (beta - 90) * 0.3));
       contactPanel.style.transform = `translate(${parallaxX}px, ${parallaxY}px)`;
     }
+
+    // Subtle parallax on panel headings (opposite direction for depth)
+    panelHeadings.forEach((heading) => {
+      if (isElementInViewport(heading)) {
+        const offsetX = Math.max(-10, Math.min(10, -tiltX * 0.2));
+        const offsetY = Math.max(-10, Math.min(10, -tiltY * 0.2));
+        heading.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+      }
+    });
+
+    // Very subtle parallax on panel text (same direction, less movement)
+    panelTexts.forEach((text) => {
+      if (isElementInViewport(text)) {
+        const offsetX = Math.max(-5, Math.min(5, tiltX * 0.1));
+        const offsetY = Math.max(-5, Math.min(5, tiltY * 0.1));
+        text.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+      }
+    });
+
+    // Subtle tilt on category titles for depth
+    categoryTitles.forEach((title) => {
+      if (isElementInViewport(title)) {
+        const rotateX = Math.max(-3, Math.min(3, -tiltY * 0.05));
+        const rotateY = Math.max(-3, Math.min(3, tiltX * 0.05));
+        title.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      }
+    });
+
+    // Floating effect on social links
+    socialLinks.forEach((link, index) => {
+      if (isElementInViewport(link)) {
+        const offsetX = Math.max(
+          -8,
+          Math.min(8, tiltX * (0.15 + index * 0.02))
+        );
+        const offsetY = Math.max(
+          -8,
+          Math.min(8, tiltY * (0.15 + index * 0.02))
+        );
+        link.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+      }
+    });
+
+    // Subtle depth on CTA buttons
+    ctaButtons.forEach((button) => {
+      if (isElementInViewport(button)) {
+        const rotateX = Math.max(-2, Math.min(2, -tiltY * 0.03));
+        const rotateY = Math.max(-2, Math.min(2, tiltX * 0.03));
+        button.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      }
+    });
   }
 
   function isElementInViewport(el) {
