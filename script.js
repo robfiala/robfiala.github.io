@@ -822,6 +822,7 @@ function initParallaxHeadings() {
    --------------------------------------------------------- */
 function initScrollIndicator() {
   const scrollIndicator = document.querySelector(".scroll-indicator");
+  const nav = document.querySelector(".minimal-nav");
   if (!scrollIndicator) return;
 
   let ticking = false;
@@ -836,6 +837,15 @@ function initScrollIndicator() {
           scrollIndicator.classList.add("hidden");
         } else {
           scrollIndicator.classList.remove("hidden");
+        }
+
+        // Top nav frosted banner: reinforce opacity when scrolled
+        if (nav) {
+          if (scrollY > 8) {
+            nav.classList.add("scrolled");
+          } else {
+            nav.classList.remove("scrolled");
+          }
         }
 
         ticking = false;
@@ -1326,3 +1336,7 @@ function initCategoryTilesCycle() {
     start();
   });
 }
+
+/* ---------------------------------------------------------
+   DANGEROUS LIGHT MODE TOGGLE
+   --------------------------------------------------------- */
