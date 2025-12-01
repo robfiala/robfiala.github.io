@@ -584,7 +584,7 @@ function initComingSoonFollow() {
           }
         })
         .catch((err) => {
-          console.log("Device orientation permission denied:", err);
+          // Permission denied - feature disabled
         });
     }
   }
@@ -779,11 +779,12 @@ function initElementFades() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("in-view");
-          io.unobserve(entry.target);
+        } else {
+          entry.target.classList.remove("in-view");
         }
       });
     },
-    { threshold: 0.15 }
+    { threshold: 0.5 }
   );
 
   fadeItems.forEach((el) => io.observe(el));
@@ -977,10 +978,7 @@ function initInteractiveBlur() {
   ];
 
   pairs.forEach(({ panel, sharp }) => {
-    if (!panel || !sharp) {
-      console.warn("Missing element:", { panel, sharp });
-      return;
-    }
+    if (!panel || !sharp) return;
 
     panel.addEventListener("mousemove", (e) => {
       const rect = panel.getBoundingClientRect();
@@ -1008,25 +1006,31 @@ function initDeviceTiltEffects() {
   if (!window.DeviceOrientationEvent) return;
 
   const contactPanel = document.querySelector(".contact-panel");
-  const categoryTiles = document.querySelectorAll(".category-tile");
+  const categoryTiles = document.querySelectorAll(
+    ".category-tile:not(.single-tile)"
+  );
   const categoryTitles = document.querySelectorAll(".category-title");
   const socialLinks = document.querySelectorAll(".social-links a");
   const ctaButtons = document.querySelectorAll(".cta-button");
 
   let permissionGranted = false;
+  let permissionRequested = false;
   let lastUpdate = 0;
   const throttleMs = 50; // Throttle to 20fps for better performance
 
   function handleOrientation(e) {
     if (!permissionGranted) return;
 
+    // Validate orientation data
+    if (e.beta === null || e.gamma === null) return;
+
     // Throttle updates for performance
     const now = Date.now();
     if (now - lastUpdate < throttleMs) return;
     lastUpdate = now;
 
-    const beta = e.beta || 0; // front-back tilt (-180 to 180)
-    const gamma = e.gamma || 0; // left-right tilt (-90 to 90)
+    const beta = e.beta; // front-back tilt (-180 to 180)
+    const gamma = e.gamma; // left-right tilt (-90 to 90)
 
     // Normalize tilt values
     const tiltX = gamma * 0.5; // -45 to 45
@@ -1039,7 +1043,7 @@ function initDeviceTiltEffects() {
       contactPanel.style.transform = `translate(${parallaxX}px, ${parallaxY}px)`;
     }
 
-    // 3D tilt on category tiles (photography, videography sections without image backgrounds)
+    // 3D tilt on category tiles (excluding single-tile for videography)
     categoryTiles.forEach((tile) => {
       if (isElementInViewport(tile)) {
         const rotateX = Math.max(-5, Math.min(5, -tiltY * 0.08));
@@ -1083,16 +1087,17 @@ function initDeviceTiltEffects() {
   }
 
   function isElementInViewport(el) {
+    if (!el) return false;
     const rect = el.getBoundingClientRect();
     return rect.top < window.innerHeight && rect.bottom > 0;
   }
 
   // Request permission for iOS 13+
   function requestOrientationPermission() {
-    if (
-      !permissionGranted &&
-      typeof DeviceOrientationEvent.requestPermission === "function"
-    ) {
+    if (permissionRequested) return;
+    permissionRequested = true;
+
+    if (typeof DeviceOrientationEvent.requestPermission === "function") {
       DeviceOrientationEvent.requestPermission()
         .then((permissionState) => {
           if (permissionState === "granted") {
@@ -1103,20 +1108,22 @@ function initDeviceTiltEffects() {
           }
         })
         .catch((err) => {
-          console.log("Tilt permission denied:", err);
+          // Tilt permission denied - feature disabled
         });
     }
   }
 
   if (typeof DeviceOrientationEvent.requestPermission === "function") {
-    // iOS 13+ - wait for user interaction
-    document.body.addEventListener("touchstart", requestOrientationPermission, {
-      once: true,
-      passive: true,
-    });
-    document.body.addEventListener("click", requestOrientationPermission, {
-      once: true,
-    });
+    // iOS 13+ - request permission on first scroll or after a short delay
+    setTimeout(() => {
+      const scrollTrigger = () => {
+        if (!permissionRequested && window.scrollY > 50) {
+          requestOrientationPermission();
+          window.removeEventListener("scroll", scrollTrigger);
+        }
+      };
+      window.addEventListener("scroll", scrollTrigger, { passive: true });
+    }, 1000);
   } else if (window.DeviceOrientationEvent) {
     // Android and other devices - auto enable
     permissionGranted = true;
@@ -1336,7 +1343,3 @@ function initCategoryTilesCycle() {
     start();
   });
 }
-
-/* ---------------------------------------------------------
-   DANGEROUS LIGHT MODE TOGGLE
-   --------------------------------------------------------- */
